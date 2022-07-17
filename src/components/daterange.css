@@ -1,0 +1,24 @@
+.rdrDateRangeWrapper {
+    margin: 12px 0;
+    width: 200px;
+
+}
+
+.rdrDateRangeWrapper .rdrMonthAndYearWrapper {
+    width: 100%;
+    /* background-color: aquamarine; */
+}
+
+.rdrDateRangeWrapper .rdrMonthAndYearWrapper .rdrMonthAndYearPickers {
+    width: 60%;
+    /* background-color: antiquewhite; */
+}
+
+/* .rdrDateRangeWrapper .rdrMonthAndYearWrapper .rdrPprevButton {
+    background-color: antiquewhite;
+} */
+
+/* 
+.rdrDateRangeWrapper {
+    padding: 4px 12px;
+} */

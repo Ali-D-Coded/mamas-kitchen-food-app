@@ -1,0 +1,7 @@
+.card-custom::before {
+    content:url('../images/ribbon110px.svg') ;
+    position: absolute;
+    left: -5px;
+    top:20px;
+
+}

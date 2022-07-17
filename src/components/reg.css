@@ -1,0 +1,11 @@
+.ant-input {
+    /* background-color: aqua; */
+    border-radius: 5px;
+    height: 2.9rem;
+    width: 19rem;
+    padding: 10px 15px 10px;
+}
+
+.ant-form-item{
+    margin-top: 1.5rem;
+}
