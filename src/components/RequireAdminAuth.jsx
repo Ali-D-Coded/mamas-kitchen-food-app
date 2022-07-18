@@ -4,7 +4,6 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { selectCurrentRole, selectCurrentToken, selectCurrentUser } from "../redux/slices/auth/authSlice";
 
 const RequireAdminAuth = ({ allowedRoles }) => {
-  const { auth } = useAuth();
   const token = useSelector(selectCurrentToken)
   const user = useSelector(selectCurrentUser);
   const role = useSelector(selectCurrentRole)
@@ -16,7 +15,7 @@ console.log(role);
   return role == allowedRoles
     ? (
     <Outlet />
-  ) : auth?.user ? (
+  ) : user ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
     <Navigate to="/admin/auth/login" state={{ from: location }} replace />

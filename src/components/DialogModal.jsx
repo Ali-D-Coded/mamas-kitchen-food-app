@@ -1,21 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-// import {
-//   Card,
-//   CardContent,
-//   CardMedia,
-//   IconButton,
-//   Typography,
-//   Box,
-// } from "@mui/material";
-// import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
-// import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-// import SkipNextIcon from "@mui/icons-material/SkipNext";
-// import { useTheme } from "@mui/material/styles";
-import {formatCurrency} from "../utils/formatCurrency"
+import { formatCurrency } from "../utils/formatCurrency";
 import { API_URL, fromImageToUrl } from "../utils/urls";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCartQuantity } from "../redux/slices/cartSlice";
+import { Avatar, Card } from "antd";
+import {
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
+} from "@ant-design/icons";
 
 const Container = styled.dialog`
   width: 400px;
@@ -26,7 +20,7 @@ const Container = styled.dialog`
     background: rgba(0, 0, 0, 0.3);
   }
 `;
-
+const { Meta } = Card;
 const Buttons = styled.div`
   display: flex;
   gap: 20px;
@@ -40,18 +34,17 @@ const DialogModal = ({
   onClose,
   // children,
 }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const ref = useRef(null);
-  const theme = useTheme();
   const [selectedData, setSelectedData] = useState({
-    food_type:null,
+    food_type: null,
     date: [],
-    day:null,
-    delevery:null,
+    day: null,
+    delevery: null,
     category: null,
-    items:null
-  })
+    items: null,
+  });
 
   useEffect(() => {
     if (isOpened) {
@@ -61,6 +54,7 @@ const DialogModal = ({
     }
   }, [isOpened]);
 
+  console.log(items);
 
   const proceedAndClose = () => {
     onProceed();
@@ -68,53 +62,33 @@ const DialogModal = ({
   };
 
   const preventAutoClose = (e) => e.stopPropagation();
-  const fd = () => {
-}
+  const fd = () => {};
   return (
     <Container ref={ref} onCancel={onClose} onClick={onClose}>
       <div onClick={preventAutoClose}>
-        <h3>{title}</h3>
-        {items?.map((item, index) => (
+        {items.map((item) => (
           <Card
-            sx={{
+            key={item.id}
+            style={{
+              // width: 300,
               display: "flex",
-              marginY: 2,
-              alignItems: "center",
               justifyContent: "space-between",
-              height: 80,
-              paddingY: 5,
+              alignItems: "center",
+              height: 100,
             }}
-            key={index}
-       
+            cover={
+              <img
+                height="100%"
+                alt="example"
+                src={`${fromImageToUrl(item.images[0], "/items/images/")}`}
+              />
+            }
+            actions={[<SettingOutlined key="setting" />]}
           >
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <CardContent
-                sx={{ flex: "1 0 auto" }}
-                onClick={() => dispatch(increaseCartQuantity(item))}
-              >
-                {/* <Typography component="div" variant="h7"> */}
-                <span onClick={() => fd()} className="text-sm" id={1}>
-                  {item.name}
-                </span>
-                {/* </Typography> */}
-                <Typography variant="caption" color="text.dark" component="h2">
-                  {formatCurrency(item.price)}
-                </Typography>
-              </CardContent>
-            </Box>
-            <CardMedia
-              component="img"
-              sx={{ width: 151, height: 80, marginX: 1 }}
-              image={`${fromImageToUrl(item.images[0], "/items/images/")}`}
-              alt="Live from space album cover"
-            />
+            <Meta title={item.name} description={item.description} />
+            <Meta description={formatCurrency(item.price)} />
           </Card>
         ))}
-        {/* {children} */}
-        <Buttons>
-          <button onClick={proceedAndClose}>Proceed</button>
-          <button onClick={onClose}>Close</button>
-        </Buttons>
       </div>
     </Container>
   );

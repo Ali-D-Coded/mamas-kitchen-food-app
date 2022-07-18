@@ -3,9 +3,11 @@ import { Outlet } from "react-router-dom";
 // import 'react-date-range/dist/styles.css'; // main style file
 // import 'react-date-range/dist/theme/default.css'; // theme css file
 // import { DateRange, DateRangePicker  } from "react-date-range";
-// import { addDays, format } from "date-fns";
+import { addDays, format } from "date-fns";
 import './daterange.css'
 import {MdOutlineMenu} from 'react-icons/md'
+import { useDispatch } from "react-redux";
+import { logOut } from "../redux/slices/auth/authSlice";
 
 
 const Layout = ({ children }) => {
@@ -17,10 +19,12 @@ const Layout = ({ children }) => {
   }
   ])
 
+  const dispatch = useDispatch()
+
   console.log(range);
   
   // const [open, setOpen] = useState(false)
-  // const refOne = useRef(null)
+  const refOne = useRef(null)
   // useEffect(() => {
   //   document.addEventListener('keydown',hidOnEscape,true)
   //   document.addEventListener('click',hidOnClickOutside,true)
@@ -71,7 +75,9 @@ const Layout = ({ children }) => {
             )} */}
           </div>
         </span>
-        <span>
+        <span onClick={() => {
+          dispatch(logOut())
+        }}>
           <MdOutlineMenu className="text-white font-thin" fontSize="medium" />
         </span>
       </div>

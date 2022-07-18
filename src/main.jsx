@@ -5,6 +5,9 @@ import App from "./App";
 import "./index.css";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import "antd/dist/antd.css";
 // import { AuthProvider } from "./context/AuthProvider";
 
 // const root = document.getElementById("root");
@@ -14,15 +17,19 @@ import { Provider } from "react-redux";
 // console.log(viewport_height);
 // console.log('====================================');
 
+let persistor = persistStore(store);
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* <AuthProvider> */}
     <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </BrowserRouter>
+      <PersistGate loading={null} persistor={persistor}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </BrowserRouter>
+      </PersistGate>
     </Provider>
     {/* </AuthProvider> */}
   </React.StrictMode>

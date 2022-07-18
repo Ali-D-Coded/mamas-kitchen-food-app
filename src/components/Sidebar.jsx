@@ -9,7 +9,7 @@ import {
   MdDonutSmall,
 } from "react-icons/md";
 import { HiUsers } from "react-icons/hi";
-import { Avatar, Image } from 'antd';
+import { Avatar, Image, Tooltip } from 'antd';
 
 
 
@@ -70,11 +70,11 @@ const Sidebar = ({children}) => {
         </motion.div>
         <section className="text-white ">
           {routes.map((rt, i) => (
-            <NavLink to={rt.path} key={i}>
-              <Tooltip title={rt.name} key={i} placement="right" arrow>
+            <NavLink to={rt.path} key={i} className="text-white text-base">
+              <Tooltip title={rt.name} key={i} placement="right" color='#99353D' >
 
               <div
-                className={`flex  gap-5 my-5 px-2 hover:border-r-4 hover:w-[96%] hover:scale-110 hover:pl-3 ${
+                className={`flex items-center gap-5 my-5 px-2 hover:border-r-4 hover:w-[96%] hover:scale-110 hover:pl-3 ${
                   pathname == rt.name.toLocaleLowerCase()
                     ? "bg-red-300/25 scale-100 pl-3 w-[96%] py-1"
                     : ""

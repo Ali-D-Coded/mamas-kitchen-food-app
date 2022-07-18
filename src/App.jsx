@@ -37,7 +37,7 @@ function App() {
         <Route path="payment" element={<Payment />} />
       </Route>
 
-      {/* <Route element={<RequireAdminAuth allowedRoles={1} />}> */}
+      <Route element={<RequireAdminAuth allowedRoles={1} />}>
       <Route
         path="admin/dashboard"
         element={
@@ -86,7 +86,7 @@ function App() {
           </Sidebar>
         }
       />
-      {/* </Route> */}
+      </Route>
 
       <Route path="auth" element={<AuthPage />} />
       <Route path="admin/auth/login" element={<AdminAuth />} />

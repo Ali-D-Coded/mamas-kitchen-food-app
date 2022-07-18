@@ -268,50 +268,12 @@ import Loader from "./loadings/Loader";
 
 const FoodList = () => {
   const dispatch = useDispatch();
-  // const itemData = useSelector(selectAllItems);
-  // const itemsStatus = useSelector(getItemsState);
-  // const itemsError = useSelector(getItemsError);
-  // const itemsdt = useSelector(selectAllItems)
-  // const [itemData, setItemData] = useState([]);
 
-  const APIClientPrivate = useAxiosPrivate();
-  // const { auth } = useAuth();
-
-  // useEffect(() => {
-  //   if (itemsStatus === "idle") {
-  //     dispatch(fetchItems());
-  //   }
-  // }, [itemsStatus, dispatch]);
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const controller = new AbortController()
-  //   const getitems = async () => {
-  //     try {
-  //       const res = await APIClientPrivate.get("/day", {
-  //         signal: controller.signal,
-  //       });
-
-  //       isMounted && setItemData(res.data)
-  //       dispatch(storeItems(res.data));
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  //   getitems()
-
-  //   return () => {
-  //     isMounted = false;
-  //     controller.abort();
-  //   }
-  // }, [])
   const {data:itemData,isLoading,isSuccess,isError,error } = useGetItemsQuery()
 
-  // console.log(lodesh.flatten(itemsdt));
+
   console.log(itemData);
-  //  const [open, setOpen] = React.useState(false);
-  //  const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-  // const dispatch = useDispatch();
+ 
   const [isOpened, setIsOpened] = useState({
     state: false,
     items: [],

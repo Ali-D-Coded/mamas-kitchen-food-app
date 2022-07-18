@@ -1,17 +1,19 @@
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectCurrentToken } from "../redux/slices/auth/authSlice";
 import { APIClientPrivate } from "../utils/axios";
 import useRefreshToken from "./useRefreshToken";
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
+  const token = useSelector(selectCurrentToken)
 
-  const { auth } = useAuth();
 
   useEffect(() => {
     const requestIntercept = APIClientPrivate.interceptors.request.use(
       (config) => {
         if (config.headers["Authorization"]) {
-          config.headers["Authorization"] = `Bearer ${auth?.access_token}`;
+          config.headers["Authorization"] = `Bearer ${token}`;
         }
         return config;
       },
@@ -35,7 +37,7 @@ const useAxiosPrivate = () => {
       APIClientPrivate.interceptors.request.eject(requestIntercept);
       APIClientPrivate.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, refresh]);
+  }, [token, refresh]);
 
   return APIClientPrivate;
 };

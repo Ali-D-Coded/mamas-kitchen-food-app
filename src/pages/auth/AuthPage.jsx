@@ -27,11 +27,11 @@ const AuthPage = () => {
   const [selectedTab, setSelectedTab] = useState(tabs[0])
   return (
     <div className=" h-screen">
-      <div className="bg-[#99353D] h-[30%] grid place-items-center rounded-b-xl">
+      <div className="bg-[#99353D] h-[250px] grid place-items-center rounded-b-xl">
         <div>
           <img src={MamasLogo} alt="Mamas Logo" />
         </div>
-        <nav className="w-full self-end text-white px-8 text-lg font-medium">
+        <nav className="w-full self-end h-8 text-white px-8 text-lg font-medium">
           <ul className="flex justify-around ">
             {tabs.map((item, index) => (
               <li
