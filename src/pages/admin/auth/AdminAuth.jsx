@@ -10,25 +10,28 @@ import {
 } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useRef, useState } from "react";
-import { adminloginMutation } from "../../../redux/slices/auth/authAdminApiSlice";
 import jsCookie from "js-cookie";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useLoginAdminMutation } from "../../../redux/slices/auth/adminAuthApiSlice";
+import { setCredentials } from "../../../redux/slices/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const { Title } = Typography;
 
 const AdminAuth = () => {
-  const [login, { isLoading }] = adminloginMutation();
+  const [loginAdmin, { isLoading }] = useLoginAdminMutation();
   const userRef = useRef();
   const errRef = useRef();
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch()
 
   const [errMsg, setErrMsg] = useState("");
 
   const onFinish = async (values) => {
     console.log("Success:", values);
     try {
-      const userData = await login({
+      const userData = await loginAdmin({
         email: values.email,
         password: values.password,
       }).unwrap();
@@ -40,7 +43,8 @@ const AdminAuth = () => {
           role: userData.user.role,
         })
       );
-      jsCookie.set("token", userData.token);
+
+      // jsCookie.set("token", userData.token);
       navigate("/admin/dashboard");
     } catch (error) {
       if (!error?.response) {
@@ -75,7 +79,8 @@ const AdminAuth = () => {
               description={errMsg}
               type="error"
               showIcon
-              className="my-5"
+                className="my-5"
+                closable
             />
           )}
         </div>
@@ -86,12 +91,12 @@ const AdminAuth = () => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
+            name="email"
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              placeholder="email"
             />
           </Form.Item>
           <Form.Item

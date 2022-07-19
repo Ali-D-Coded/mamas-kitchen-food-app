@@ -1,8 +1,8 @@
 import { apiSlice } from "../../api/apiSlice";
 
-export const authAdminApiSlice = apiSlice.injectEndpoints({
+export const adminAuthApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation({
+    loginAdmin: builder.mutation({
       query: (credentials) => ({
         url: "/auth/local/admin/signin",
         method: "POST",
@@ -12,4 +12,4 @@ export const authAdminApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation : adminloginMutation } = authAdminApiSlice;
+export const { useLoginAdminMutation } = adminAuthApiSlice;

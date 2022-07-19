@@ -1,6 +1,6 @@
-import { Button, Divider, Radio, Table } from "antd";
+import { Alert, Button, Divider, Input, Radio, Spin, Table } from "antd";
 import React, { useState } from "react";
-import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
+import { useGetAllItemsQuery } from "../redux/slices/items/getAllItemsForAdmin";
 
 const columns = [
   { dataIndex: "name", title: "Name" },
@@ -8,11 +8,11 @@ const columns = [
   {
     dataIndex: "category",
     title: "Category",
+    render: (record) => <p>{record?.name}</p>,
   },
   {
     dataIndex: "price",
     title: "Price",
-    
   },
   {
     dataIndex: "food_type",
@@ -21,13 +21,7 @@ const columns = [
   {
     dataIndex: "actions",
     title: "Actions",
-    render: () => (
-      <Button>
-        Edit
-      </Button>
-    )
-    
-
+    render: () => <Button>Edit</Button>,
   },
 ];
 
@@ -37,54 +31,76 @@ const data = [
     name: "Burger",
     description: "lkjfaskhfasjasasd",
     price: "10",
-    food_type:"BREAKFAST"
+    food_type: "BREAKFAST",
   },
-   {
+  {
     key: "2",
     name: "Sandwitch",
     description: "lkjfaskhfasjasasd",
     price: "10",
-    food_type:"BREAKFAST"
+    food_type: "BREAKFAST",
   },
-    {
+  {
     key: "3",
     name: "Cutlet",
     description: "lkjfaskhfasjasasd",
     price: "10",
-    food_type:"BREAKFAST"
+    food_type: "BREAKFAST",
   },
 ];
 
-
- 
-
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
-    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    console.log(
+      `selectedRowKeys: ${selectedRowKeys}`,
+      "selectedRows: ",
+      selectedRows
+    );
   },
   getCheckboxProps: (record) => ({
-    disabled: record.name === 'Disabled User',
+    disabled: record.name === "Disabled User",
     // Column configuration not to be checked
     name: record.name,
   }),
 };
 
 const ItemsTable = () => {
-   const {
-     data: itemData,
-     isLoading,
-     isSuccess,
-     isError,
-     error,
-   } = useGetItemsQuery();
+  const {
+    data: itemData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetAllItemsQuery();
 
-   console.log("====================================");
-   console.log(itemData);
-   console.log("====================================");
-  const [selectionType, setSelectionType] = useState('checkbox');
-  return (
+  if (isSuccess) {
+    var dataGood = itemData.map((it) => ({
+      key: it.id,
+      name: it.name,
+      category: it.category,
+      description: it.description,
+      price: it.price,
+      food_type: it.food_type,
+    }));
+  }
+  const { Search } = Input
+  const onSearch = (value) => console.log(value);
+
+  console.log(dataGood);
+  const [selectionType, setSelectionType] = useState("checkbox");
+  let content;
+  content = isLoading ? (
+    <Spin />
+  ) : isError ? (
+    <Alert
+      message="Somethimg went wrong"
+      description={error}
+      type="error"
+      closable
+    />
+  ) : (
     <div>
-      <Radio.Group
+      {/* <Radio.Group
         onChange={({ target: { value } }) => {
           setSelectionType(value);
         }}
@@ -92,20 +108,40 @@ const ItemsTable = () => {
       >
         <Radio value="checkbox">Checkbox</Radio>
         <Radio value="radio">radio</Radio>
-      </Radio.Group>
+          </Radio.Group> */}
+      <div>
+        <Search
+          placeholder="input search text"
+          allowClear
+          onSearch={onSearch}
+          enterButton="Search"
+          style={{
+            width:300,
+            height: 10,
+              }}
+              size="large"
+        />
+      </div>
 
       <Divider />
-
-       <Table
-        rowSelection={{
-          type: selectionType,
-          ...rowSelection,
-        }}
-        columns={columns}
-        dataSource={data}
-      />
+      <div className="px-5">
+        <Table
+          rowSelection={{
+            type: selectionType,
+            ...rowSelection,
+          }}
+          columns={columns}
+          dataSource={dataGood}
+          scroll={{
+            y: 400,
+            x:1500
+          }}
+        />
+      </div>
     </div>
-  )
-}
+  );
 
-export default ItemsTable
+  return content;
+};
+
+export default ItemsTable;

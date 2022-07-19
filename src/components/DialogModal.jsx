@@ -9,6 +9,8 @@ import {
   EditOutlined,
   EllipsisOutlined,
   SettingOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined,
 } from "@ant-design/icons";
 
 const Container = styled.dialog`
@@ -37,13 +39,14 @@ const DialogModal = ({
   const dispatch = useDispatch();
 
   const ref = useRef(null);
+  const cardRef = useRef()
   const [selectedData, setSelectedData] = useState({
-    food_type: null,
-    date: [],
-    day: null,
-    delevery: null,
-    category: null,
-    items: null,
+    // food_type: null,
+    // date: [],
+    // day: null,
+    // delevery: null,
+    // category: null,
+    // items: null,
   });
 
   useEffect(() => {
@@ -54,12 +57,13 @@ const DialogModal = ({
     }
   }, [isOpened]);
 
-  console.log(items);
+  // console.log(items);
 
-  const proceedAndClose = () => {
-    onProceed();
-    onClose();
+  const proceedAndClose = (values) => {
+   console.log(values)
   };
+
+
 
   const preventAutoClose = (e) => e.stopPropagation();
   const fd = () => {};
@@ -72,10 +76,12 @@ const DialogModal = ({
             style={{
               // width: 300,
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "space-around",
               alignItems: "center",
               height: 100,
+              padding:"10px"
             }}
+            ref={cardRef}
             cover={
               <img
                 height="100%"
@@ -83,10 +89,16 @@ const DialogModal = ({
                 src={`${fromImageToUrl(item.images[0], "/items/images/")}`}
               />
             }
-            actions={[<SettingOutlined key="setting" />]}
+            onClick={() => {
+              proceedAndClose(item);
+            }}
+            actions={[
+              <PlusCircleOutlined key="add" />,
+              <MinusCircleOutlined key="remove" />,
+            ]}
           >
             <Meta title={item.name} description={item.description} />
-            <Meta description={formatCurrency(item.price)} />
+            {/* <Meta description={formatCurrency(item.price)} /> */}
           </Card>
         ))}
       </div>

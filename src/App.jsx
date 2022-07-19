@@ -20,6 +20,7 @@ import Plans from "./pages/admin/plans/Plans";
 import Categories from "./pages/admin/categories/Categories";
 import Sidebar from "./components/Sidebar";
 import CreateItems from "./pages/admin/items/CreateItems";
+import Orders from "./pages/admin/orders/Orders";
 
 function App() {
   return (
@@ -83,6 +84,14 @@ function App() {
         element={
           <Sidebar>
             <CreateItems />
+          </Sidebar>
+        }
+      />
+      <Route
+        path="admin/dashboard/items/orders"
+        element={
+          <Sidebar>
+            <Orders />
           </Sidebar>
         }
       />

@@ -1,7 +1,12 @@
 .card-custom::before {
-    content:url('../images/ribbon110px.svg') ;
+    content: url('../assets/ribbon110px.svg');
     position: absolute;
     left: -5px;
-    top:20px;
+    top: 20px;
 
+
+}
+
+.ant-select-selector {
+    background-color: green;
 }

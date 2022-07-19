@@ -8,7 +8,7 @@ import { API_URL } from "../utils/urls";
 import axios from "axios";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import * as lodesh from "lodash"
+import * as lodesh from "lodash";
 // import {
 //   selectAllItems,
 //   // getItemsState,
@@ -18,6 +18,7 @@ import * as lodesh from "lodash"
 // } from "../redux/slices/items/itemSlice";
 import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
 import Loader from "./loadings/Loader";
+import { selectCurrentFoodType } from "../redux/slices/items/itemSlice";
 // const cards_data = [
 //   {
 //     day: "SUNDAY",
@@ -268,12 +269,24 @@ import Loader from "./loadings/Loader";
 
 const FoodList = () => {
   const dispatch = useDispatch();
+  const selectedFoodType = useSelector(selectCurrentFoodType);
+  console.log("selectedFoodType: ", selectedFoodType.name);
+  const [refresh, setRefresh] = useState(false);
 
-  const {data:itemData,isLoading,isSuccess,isError,error } = useGetItemsQuery()
+  useEffect(() => {
+    setRefresh((prev) => !prev);
+  }, [selectedFoodType]);
 
+  const {
+    data: itemData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetItemsQuery(selectedFoodType.name);
 
-  console.log(itemData);
- 
+  // console.log(itemData);
+
   const [isOpened, setIsOpened] = useState({
     state: false,
     items: [],
@@ -297,7 +310,6 @@ const FoodList = () => {
             <span className="text-white text-sm font-bold absolute left-[5px] top-[22px]">
               {card.day}
             </span>
-
             {/* <div className="bg-[#99353D] absolute top-14 right-10 rounded-2xl text-white text-sm w-40 text-center"> */}
             <select className="bg-[#99353D] absolute top-14 p-1 right-10 rounded-2xl text-white text-sm w-40 text-center">
               <option defaultValue="select">Select Delivery</option>
@@ -346,11 +358,11 @@ const FoodList = () => {
         />
       </div>
     );
-  } else if(isError) {
-    content = <p>{ JSON.stringify(error)}</p>
+  } else if (isError) {
+    content = <p>{JSON.stringify(error)}</p>;
   }
 
-  return content
+  return content;
 };
 
 export default FoodList;

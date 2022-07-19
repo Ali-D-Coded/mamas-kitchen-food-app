@@ -12,7 +12,7 @@ import storage from "redux-persist/lib/storage";
 
 import modalReducer from "./slices/modalSlice";
 import cartReducer from "./slices/cartSlice";
-// import itemReducer from "./slices/items/itemSlice"
+import itemReducer from "./slices/items/itemSlice"
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "./slices/auth/authSlice";
 import { authApiSlice } from "./slices/auth/authApiSlice";
@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   openModal: modalReducer,
   cart: cartReducer,
-  // items: itemReducer,
+  items: itemReducer,
 });
 
 const persistConfig = {
