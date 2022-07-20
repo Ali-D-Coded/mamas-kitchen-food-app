@@ -285,7 +285,7 @@ const FoodList = () => {
     error,
   } = useGetItemsQuery(selectedFoodType.name);
 
-  // console.log(itemData);
+  console.log(itemData);
 
   const [isOpened, setIsOpened] = useState({
     state: false,

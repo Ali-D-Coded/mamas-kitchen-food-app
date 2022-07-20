@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { formatCurrency } from "../utils/formatCurrency";
 import { API_URL, fromImageToUrl } from "../utils/urls";
 import { useDispatch, useSelector } from "react-redux";
-import { increaseCartQuantity } from "../redux/slices/cartSlice";
+import { increaseCartQuantity } from "../redux/slices/cart/cartSlice";
 import { Avatar, Card } from "antd";
 import {
   EditOutlined,

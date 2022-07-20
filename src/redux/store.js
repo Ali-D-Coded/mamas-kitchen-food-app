@@ -11,7 +11,7 @@ import {
 import storage from "redux-persist/lib/storage";
 
 import modalReducer from "./slices/modalSlice";
-import cartReducer from "./slices/cartSlice";
+import cartReducer from "./slices/cart/cartSlice";
 import itemReducer from "./slices/items/itemSlice"
 import { apiSlice } from "./api/apiSlice";
 import authReducer from "./slices/auth/authSlice";
