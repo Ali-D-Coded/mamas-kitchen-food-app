@@ -92,10 +92,10 @@ const DialogModal = ({
             onClick={() => {
               proceedAndClose(item);
             }}
-            actions={[
-              <PlusCircleOutlined key="add" />,
-              <MinusCircleOutlined key="remove" />,
-            ]}
+            // actions={[
+            //   <PlusCircleOutlined key="add" />,
+            //   <MinusCircleOutlined key="remove" />,
+            // ]}
           >
             <Meta title={item.name} description={item.description} />
             {/* <Meta description={formatCurrency(item.price)} /> */}

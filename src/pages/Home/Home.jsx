@@ -9,7 +9,7 @@ const Home = () => {
     <>
         {/* <Loader /> */}
       <FoodList />
-    <div className="h-full">
+    {/* <div className="h-full">
       <Link to="/profile">
         <button>Profile</button>
         </Link>
@@ -20,7 +20,7 @@ const Home = () => {
     
           <br />
          <button onClick={() => refresh()}>Refresh</button>
-    </div>
+    </div> */}
     </>
   );
 };

@@ -90,6 +90,7 @@ const Login = () => {
           user: userData.user,
           accessToken: userData.token,
           role: userData.user.role,
+          
         })
       );
       jsCookie.set("token", userData.token);

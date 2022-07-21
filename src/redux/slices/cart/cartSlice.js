@@ -165,9 +165,16 @@ export const cartSlice = createSlice({
   reducers: {
     // getItemQuantity: (state) => {},
     increaseCartQuantity: (state, action) => {
-      const { day, delivery, foodType,items, totalAmount } = action.payload
+      const { day, delivery, foodType, items, totalAmount } = action.payload
+      console.log({
+        day,
+        delivery,
+        foodType,
+        items,
+        totalAmount,
+      });
       if (day == 'SUNDAY') {
-          state.SUNDAY.delivery = delivery;
+          state.SUNDAY.delivery = delivery ? delivery : "nonr"
           if (foodType == "BREAKFAST") {
             state.SUNDAY.meals.BREAKFAST.push(items)
           }

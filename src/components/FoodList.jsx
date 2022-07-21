@@ -4,11 +4,13 @@ import { handleOpenModal } from "../redux/slices/modalSlice";
 import "./foodlist.css";
 import DialogModal from "./DialogModal";
 import APIClient from "../utils/axios";
-import { API_URL } from "../utils/urls";
+import { API_URL, fromImageToUrl } from "../utils/urls";
 import axios from "axios";
 import useRefreshToken from "../hooks/useRefreshToken";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import * as lodesh from "lodash";
+import { motion, AnimatePresence } from "framer-motion";
+import { PlusCircleOutlined } from "@ant-design/icons";
 // import {
 //   selectAllItems,
 //   // getItemsState,
@@ -18,7 +20,25 @@ import * as lodesh from "lodash";
 // } from "../redux/slices/items/itemSlice";
 import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
 import Loader from "./loadings/Loader";
-import { selectCurrentFoodType } from "../redux/slices/items/itemSlice";
+import {
+  selectCurrentFoodType,
+  setFoodType,
+} from "../redux/slices/items/itemSlice";
+import {
+  Checkbox,
+  Image,
+  Radio,
+  Button,
+  Col,
+  Row,
+  Divider,
+  Tag,
+  Select,
+  Collapse,
+} from "antd";
+import { increaseCartQuantity } from "../redux/slices/cart/cartSlice";
+import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
+import { useGetCategoriesQuery } from "../redux/slices/items/categoriesApiSlice";
 // const cards_data = [
 //   {
 //     day: "SUNDAY",
@@ -270,31 +290,113 @@ import { selectCurrentFoodType } from "../redux/slices/items/itemSlice";
 const FoodList = () => {
   const dispatch = useDispatch();
   const selectedFoodType = useSelector(selectCurrentFoodType);
-  console.log("selectedFoodType: ", selectedFoodType.name);
+  const [itemData, setItemData] = useState();
+  const [selectedCategories, setSelectedCategories] = useState();
+  const [selectedItems, setSelectedItems] = useState()
+  const [selectedDays,setSelectedDays] = useState([])
+  const [selectedDelivery, setSelectedDelivery] = useState()
+  
+  const [daysData, setDaysData] = useState([
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+  ]);
+
+
+
+
+  // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
 
-  useEffect(() => {
-    setRefresh((prev) => !prev);
-  }, [selectedFoodType]);
 
   const {
-    data: itemData,
+    data: items,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetItemsQuery(selectedFoodType.name);
+  } = useGetItemsQuery(selectedFoodType?.name);
 
-  console.log(itemData);
+  const { data: categoryData, isSuccess: catgorySucess } =
+    useGetCategoriesQuery();
 
-  const [isOpened, setIsOpened] = useState({
-    state: false,
-    items: [],
-  });
+  useEffect(() => {
+    setRefresh((prev) => !prev);
+    setItemData(items);
+  }, [selectedFoodType]);
+
+  // console.log("daysData", daysData.filter(it => {
+  //   return !selectedDays.includes(it) && it
+  // }),selectedDays);
+
+  useEffect(() => {
+    setDaysData((prev) =>
+      prev.filter((it) => !selectedDays.includes(it) && it)
+    );
+    if (selectedDays.length < 1) {
+       setDaysData((prev) =>
+         prev.filter((it) =>  it)
+       );
+    }
+  }, [selectedDays]);
+
+  console.log("itemData :",isSuccess && items?.map(it => it.items));
 
   const onProceed = () => {
     console.log("Proceed clicked");
   };
+  const onChange = (checkedValues) => {
+    console.log("categoroes = ", checkedValues);
+    setSelectedCategories(checkedValues);
+    setItemData((prev) => {
+      console.log(prev);
+    });
+  };
+  const onChangeDay = (value) => {
+    console.log(`selected ${value}`);
+    setSelectedDays(value);
+  };
+  const onSearchDay = (value) => {
+    console.log("search:", value);
+  };
+  const onChangeDelivery = (value) => {
+    console.log(`selected ${value}`);
+    setSelectedDelivery(value)
+  };
+  const onSearchDelivery = (value) => {
+    console.log("search:", value);
+  };
+  const { data: PlansDt, isSuccess: plansSucces } = useGetAllPlansQuery();
+
+  // const daysData = [
+  //   "SUNDAY",
+  //   "MONDAY",
+  //   "TUESDAY",
+  //   "WEDNESDAY",
+  //   "THURSDAY",
+  //   "FRIDAY",
+  //   "SATURDAY",
+  // ];
+  const deliveryData = ["WORK", "HOME", "OTHER"];
+
+  // if (plansSucces) {
+  //   var foodType = PlansDt;
+  // }
+  function addItemtoCart(values) {
+
+setSelectedItems(values)
+    console.log({
+      selectedItems,
+      selectedFoodType: selectedFoodType.name,
+      selectedCategories,
+      selectedDays,
+      selectedDelivery,
+    });
+  }
 
   let content;
   if (isLoading) {
@@ -302,49 +404,162 @@ const FoodList = () => {
   } else if (isSuccess) {
     content = (
       <div className="grid place-items-center pt-10 pb-28 ">
-        {lodesh.flatten(itemData)?.map((card, index) => (
+        <div className="sticky top-1 z-50 grid h-auto mb-4">
+          <FoodtypeComponent foodType={PlansDt} />
+        </div>
+        {/* <div className="sticky top-11 z-50">
+          <Checkbox.Group
+            style={{
+              width: "100%",
+            }}
+            onChange={onChange}
+          >
+            <Row className="flex justify-center">
+              {catgorySucess &&
+                categoryData?.map((cat) => (
+                  <Checkbox value={cat.id} key={cat.id} className="shadow-lg">
+                    <Tag color="orange">{cat.name}</Tag>
+                  </Checkbox>
+                ))}
+            </Row>
+          </Checkbox.Group>
+        </div> */}
+        <Divider />
+        {/* {isSuccess && lodesh.flatten(itemData)?.map((card, index) => (
+          
           <div
             key={index}
-            className="relative my-2 card-custom bg-white max-w-[80%] min-w-[70%] rounded-xl shadow-xl grid place-items-center h-auto "
+            className="relative my-2 bg-white max-w-[80%] min-w-[85%] rounded-xl shadow-xl grid place-items-center h-auto "
           >
-            <span className="text-white text-sm font-bold absolute left-[5px] top-[22px]">
-              {card.day}
-            </span>
-            {/* <div className="bg-[#99353D] absolute top-14 right-10 rounded-2xl text-white text-sm w-40 text-center"> */}
-            <select className="bg-[#99353D] absolute top-14 p-1 right-10 rounded-2xl text-white text-sm w-40 text-center">
-              <option defaultValue="select">Select Delivery</option>
-              <option
-                value="home"
-                className="bg-[#f8f7f7] text-[#504d4d] hover:bg-[#dad9d9]"
-              >
-                Home
-              </option>
-              <option value="office" className="bg-[#f8f7f7] text-[#504d4d] ">
-                office
-              </option>
-            </select>
-            {/* </div> */}
+            <div className="flex w-full py-3 px-3 gap-2 items-center">
+              <div className="">
+                {/* <Image
+                  src={`${fromImageToUrl(card?.images[0], "/items/images/")}`}
+                /> *
+              </div>
+              <div className=" grid place-items-center flex-grow leading-[1px] text-center">
+                <p className="text-lg font-bold font-nunito">{card.name}</p>
+                <p className="text-md font-nunito">{card.description}</p>
 
-            <div className="grid place-items-center pt-28 pb-5 w-full">
-              {card.categories?.map((cat, index) => (
-                <span
-                  key={index}
-                  onClick={() =>
-                    setIsOpened((prev) => ({
-                      ...prev,
-                      state: true,
-                      items: cat.category.items,
-                    }))
-                  }
-                  className="text-center rounded-3xl px-5 py-3 border bg-white shadow-xl my-2 w-[80%] text-sm"
-                >
-                  {cat.category.name}
-                </span>
-              ))}
+                <div className="grid gap-2">
+                  <div>
+                    <Select
+                      showSearch
+                      placeholder="Select Days"
+                      optionFilterProp="children"
+                      mode="multiple"
+                      onChange={onChangeDay}
+                      onSearch={onSearchDay}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                      style={{
+                        width: "200px",
+                      }}
+                    >
+                      {daysData.map((it) => (
+                        <Option value={it}>{it}</Option>
+                      ))}
+                    </Select>
+                  </div>
+                  <div>
+                    <Select
+                      showSearch
+                      placeholder="Select Delivery"
+                      optionFilterProp="children"
+                      onChange={onChangeDelivery}
+                      onSearch={onSearchDelivery}
+                      filterOption={(input, option) =>
+                        option.children
+                          .toLowerCase()
+                          .includes(input.toLowerCase())
+                      }
+                      style={{
+                        width: "200px",
+                      }}
+                    >
+                      {deliveryData.map((it) => (
+                        <Option value={it}>{it}</Option>
+                      ))}
+                    </Select>
+                  </div>
+                </div>
+              </div>
+              
             </div>
           </div>
-        ))}
-        <DialogModal
+        ))} */}
+
+        {isSuccess && lodesh.flatten(itemData).map(cat => {
+          return (
+            <Collapse className="w-[90%]" >
+              
+              <Collapse.Panel header={cat.name} extra={<div className="">Hi</div>} >
+                {
+                  cat.items.map(it=>{
+                    return (
+                      <div
+                        className="w-full bg-white shadow-md rounded-sm px-2 py-2"
+                        onClick={() => console.log(it)}
+                      >
+                        {it.name}
+                        <div className="grid gap-2">
+                          <div>
+                            <Select
+                              showSearch
+                              placeholder="Select Days"
+                              optionFilterProp="children"
+                              mode="multiple"
+                              onChange={onChangeDay}
+                              onSearch={onSearchDay}
+                              filterOption={(input, option) =>
+                                option.children
+                                  .toLowerCase()
+                                  .includes(input.toLowerCase())
+                              }
+                              style={{
+                                width: "200px",
+                              }}
+                            >
+                              {daysData.map((it) => (
+                                <Option value={it}>{it}</Option>
+                              ))}
+                            </Select>
+                          </div>
+                          <div>
+                            <Select
+                              showSearch
+                              placeholder="Select Delivery"
+                              optionFilterProp="children"
+                              onChange={onChangeDelivery}
+                              onSearch={onSearchDelivery}
+                              filterOption={(input, option) =>
+                                option.children
+                                  .toLowerCase()
+                                  .includes(input.toLowerCase())
+                              }
+                              style={{
+                                width: "200px",
+                              }}
+                            >
+                              {deliveryData.map((it) => (
+                                <Option value={it}>{it}</Option>
+                              ))}
+                            </Select>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                }
+              </Collapse.Panel>
+            </Collapse>
+          )
+        })}
+
+        {/* <DialogModal
           // title="Dialog modal example"
           isOpened={isOpened.state}
           items={isOpened.items}
@@ -355,7 +570,7 @@ const FoodList = () => {
               state: false,
             }))
           }
-        />
+        /> */}
       </div>
     );
   } else if (isError) {
@@ -366,3 +581,29 @@ const FoodList = () => {
 };
 
 export default FoodList;
+
+function FoodtypeComponent({ foodType }) {
+  const [selectedType, setSelectedType] = useState(1);
+  const dispatch = useDispatch();
+  const onClick = (dt) => {
+    dispatch(setFoodType(dt));
+    setSelectedType(dt.id);
+  };
+  return (
+    <div className="bg-[#99353D]/90 flex justify-between items-center px-3 py-2 gap-3 rounded-2xl shadow-md font-nunito font-bold text-[13px]">
+      {foodType?.map((it) => (
+        <motion.div
+          key={it.id}
+          onClick={() => onClick(it)}
+          className={
+            selectedType == it.id
+              ? "text-amber-500 bg-white rounded-2xl px-2 shadow-lg"
+              : "text-white  "
+          }
+        >
+          {it.name}
+        </motion.div>
+      ))}
+    </div>
+  );
+}
