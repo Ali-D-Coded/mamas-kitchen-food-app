@@ -18,6 +18,7 @@ import authReducer from "./slices/auth/authSlice";
 import { authApiSlice } from "./slices/auth/authApiSlice";
 import { signUpAuthApiSlice } from "./slices/auth/signUpAuthApiSlice";
 import { itemsApiSlice } from "./slices/items/itemsApiSlice";
+import { categoriesApiSlice } from "./slices/items/categoriesApiSlice";
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -35,6 +36,7 @@ const persistConfig = {
     authApiSlice.reducerPath,
     signUpAuthApiSlice.reducerPath,
     itemsApiSlice.reducerPath,
+    categoriesApiSlice.reducerPath,
   ],
 };
 

@@ -10,3 +10,26 @@
 .ant-select-selector {
     background-color: green;
 }
+
+.ant-collapse .ant-collapse-item {
+    /* height: 3rem; */
+    background-color: rgb(255, 255, 255);
+}
+
+.ant-collapse .ant-collapse-item .ant-collapse-header {
+    font-size: large;
+    font-family: 'Nunito', sans-serif;
+}
+
+.ant-collapse>.ant-collapse-item>.ant-collapse-header {
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    /* background-color: aqua; */
+}
+
+.ant-collapse-expand-icon{
+    display: none;
+}

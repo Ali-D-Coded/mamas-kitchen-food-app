@@ -59,7 +59,7 @@ const Sidebar = ({ children }) => {
     setIsOpen((prev) => !prev);
   };
   return (
-    <div className="h-screen flex overflow-auto">
+    <div className="h-screen flex overflow-auto font-nunito">
       <motion.div
         animate={{ width: isOpen ? "200px" : "50px" }}
         className="bg-gradient-to-r from-[#99353D] to-red-600 h-full "

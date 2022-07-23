@@ -88,7 +88,7 @@ function App() {
         }
       />
       <Route
-        path="admin/dashboard/items/orders"
+        path="admin/dashboard/orders"
         element={
           <Sidebar>
             <Orders />

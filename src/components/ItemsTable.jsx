@@ -83,8 +83,7 @@ const ItemsTable = () => {
       food_type: it.food_type,
     }));
   }
-  const { Search } = Input
-  const onSearch = (value) => console.log(value);
+
 
   console.log(dataGood);
   const [selectionType, setSelectionType] = useState("checkbox");
@@ -100,29 +99,7 @@ const ItemsTable = () => {
     />
   ) : (
     <div>
-      {/* <Radio.Group
-        onChange={({ target: { value } }) => {
-          setSelectionType(value);
-        }}
-        value={selectionType}
-      >
-        <Radio value="checkbox">Checkbox</Radio>
-        <Radio value="radio">radio</Radio>
-          </Radio.Group> */}
-      <div>
-        <Search
-          placeholder="input search text"
-          allowClear
-          onSearch={onSearch}
-          enterButton="Search"
-          style={{
-            width:300,
-            height: 10,
-              }}
-              size="large"
-        />
-      </div>
-
+    
       <Divider />
       <div className="px-5">
         <Table
@@ -134,7 +111,7 @@ const ItemsTable = () => {
           dataSource={dataGood}
           scroll={{
             y: 400,
-            x:1500
+            x:600
           }}
         />
       </div>

@@ -35,283 +35,32 @@ import {
   Tag,
   Select,
   Collapse,
+  Typography,
 } from "antd";
 import { increaseCartQuantity } from "../redux/slices/cart/cartSlice";
 import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { useGetCategoriesQuery } from "../redux/slices/items/categoriesApiSlice";
-// const cards_data = [
-//   {
-//     day: "SUNDAY",
-//     categories: [
-//       {
-//         name: "Hot Plater",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Cool Plater",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Egg Dish",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Foul",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Labneh",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Bread",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Salad",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//       {
-//         name: "Sweets",
-//         items: [
-//           {
-//             name: "Arabic Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: " Falafel Platter",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//           {
-//             name: "Fatteh With ghee",
-//             image:
-//               "https://imgs.search.brave.com/aSp62pM_uBjeZQPI1zioNRG7KeqsJ96zRwVCI4nhNiM/rs:fit:355:225:1/g:ce/aHR0cHM6Ly90c2Uy/Lm1tLmJpbmcubmV0/L3RoP2lkPU9JUC41/SlJra3c5ZVFucHdv/VTlUaVpYUGlBSGFK/NCZwaWQ9QXBp",
-//           },
-//         ],
-//       },
-//     ],
-//   },
-//   {
-//     day: "MONDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-//   {
-//     day: "TUESDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-//   {
-//     day: "WEDNESDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-//   {
-//     day: "THURSDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-//   {
-//     day: "FRIDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-//   {
-//     day: "SATURDAY",
-//     categories: [
-//       { name: "Hot Plater" },
-//       { name: "Cool Plater" },
-//       { name: "Egg Dish" },
-//       { name: "Foul" },
-//       { name: "Labneh" },
-//       { name: "Bread" },
-//       { name: "Salad" },
-//       { name: "Sweets" },
-//     ],
-//   },
-// ];
 
-// const cards_data = []
 
 const FoodList = () => {
   const dispatch = useDispatch();
   const selectedFoodType = useSelector(selectCurrentFoodType);
   const [itemData, setItemData] = useState();
   const [selectedCategories, setSelectedCategories] = useState();
-  const [selectedItems, setSelectedItems] = useState()
-  const [selectedDays,setSelectedDays] = useState([])
-  const [selectedDelivery, setSelectedDelivery] = useState()
-  
-  const [daysData, setDaysData] = useState([
-    "SUNDAY",
-    "MONDAY",
-    "TUESDAY",
-    "WEDNESDAY",
-    "THURSDAY",
-    "FRIDAY",
-    "SATURDAY",
+  const [selectedItems, setSelectedItems] = useState([
+    {
+      item: null,
+      days: [],
+      delivery: "",
+    },
   ]);
 
 
-
+  const [selectedDays, setSelectedDays] = useState([]);
+  const [selectedDelivery, setSelectedDelivery] = useState();
 
   // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
-
 
   const {
     data: items,
@@ -333,18 +82,9 @@ const FoodList = () => {
   //   return !selectedDays.includes(it) && it
   // }),selectedDays);
 
-  useEffect(() => {
-    setDaysData((prev) =>
-      prev.filter((it) => !selectedDays.includes(it) && it)
-    );
-    if (selectedDays.length < 1) {
-       setDaysData((prev) =>
-         prev.filter((it) =>  it)
-       );
-    }
-  }, [selectedDays]);
+ 
 
-  console.log("itemData :",isSuccess && items?.map(it => it.items));
+  // console.log("itemData :", isSuccess && items?.map((it) => it.items));
 
   const onProceed = () => {
     console.log("Proceed clicked");
@@ -365,37 +105,44 @@ const FoodList = () => {
   };
   const onChangeDelivery = (value) => {
     console.log(`selected ${value}`);
-    setSelectedDelivery(value)
+    setSelectedDelivery(value);
   };
   const onSearchDelivery = (value) => {
     console.log("search:", value);
   };
   const { data: PlansDt, isSuccess: plansSucces } = useGetAllPlansQuery();
 
-  // const daysData = [
-  //   "SUNDAY",
-  //   "MONDAY",
-  //   "TUESDAY",
-  //   "WEDNESDAY",
-  //   "THURSDAY",
-  //   "FRIDAY",
-  //   "SATURDAY",
-  // ];
+  const daysData = [
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+  ];
   const deliveryData = ["WORK", "HOME", "OTHER"];
 
   // if (plansSucces) {
   //   var foodType = PlansDt;
   // }
   function addItemtoCart(values) {
-
-setSelectedItems(values)
-    console.log({
-      selectedItems,
-      selectedFoodType: selectedFoodType.name,
-      selectedCategories,
-      selectedDays,
-      selectedDelivery,
-    });
+    setSelectedItems((prev) => [
+      ...prev,
+      prev.push({
+        item: values,
+        days: selectedDays,
+        delivery: selectedDelivery,
+      }),
+    ]);
+    console.log(selectedItems);
+    // console.log({
+    //   selectedItems,
+    //   selectedFoodType: selectedFoodType.name,
+    //   selectedCategories,
+    //   selectedDays,
+    //   selectedDelivery,
+    // });
   }
 
   let content;
@@ -407,157 +154,86 @@ setSelectedItems(values)
         <div className="sticky top-1 z-50 grid h-auto mb-4">
           <FoodtypeComponent foodType={PlansDt} />
         </div>
-        {/* <div className="sticky top-11 z-50">
-          <Checkbox.Group
-            style={{
-              width: "100%",
-            }}
-            onChange={onChange}
-          >
-            <Row className="flex justify-center">
-              {catgorySucess &&
-                categoryData?.map((cat) => (
-                  <Checkbox value={cat.id} key={cat.id} className="shadow-lg">
-                    <Tag color="orange">{cat.name}</Tag>
-                  </Checkbox>
-                ))}
-            </Row>
-          </Checkbox.Group>
-        </div> */}
         <Divider />
-        {/* {isSuccess && lodesh.flatten(itemData)?.map((card, index) => (
-          
-          <div
-            key={index}
-            className="relative my-2 bg-white max-w-[80%] min-w-[85%] rounded-xl shadow-xl grid place-items-center h-auto "
-          >
-            <div className="flex w-full py-3 px-3 gap-2 items-center">
-              <div className="">
-                {/* <Image
-                  src={`${fromImageToUrl(card?.images[0], "/items/images/")}`}
-                /> *
-              </div>
-              <div className=" grid place-items-center flex-grow leading-[1px] text-center">
-                <p className="text-lg font-bold font-nunito">{card.name}</p>
-                <p className="text-md font-nunito">{card.description}</p>
+   
 
-                <div className="grid gap-2">
-                  <div>
-                    <Select
-                      showSearch
-                      placeholder="Select Days"
-                      optionFilterProp="children"
-                      mode="multiple"
-                      onChange={onChangeDay}
-                      onSearch={onSearchDay}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
-                      style={{
-                        width: "200px",
-                      }}
-                    >
-                      {daysData.map((it) => (
-                        <Option value={it}>{it}</Option>
-                      ))}
-                    </Select>
-                  </div>
-                  <div>
-                    <Select
-                      showSearch
-                      placeholder="Select Delivery"
-                      optionFilterProp="children"
-                      onChange={onChangeDelivery}
-                      onSearch={onSearchDelivery}
-                      filterOption={(input, option) =>
-                        option.children
-                          .toLowerCase()
-                          .includes(input.toLowerCase())
-                      }
-                      style={{
-                        width: "200px",
-                      }}
-                    >
-                      {deliveryData.map((it) => (
-                        <Option value={it}>{it}</Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-              </div>
-              
-            </div>
-          </div>
-        ))} */}
-
-        {isSuccess && lodesh.flatten(itemData).map(cat => {
-          return (
-            <Collapse className="w-[90%]" >
-              
-              <Collapse.Panel header={cat.name} extra={<div className="">Hi</div>} >
-                {
-                  cat.items.map(it=>{
+        {isSuccess &&
+          lodesh.flatten(itemData).map((cat) => {
+            return (
+              <Collapse className="w-[90%]">
+                <Collapse.Panel
+                  header={cat.name}
+                  extra={[
+                    <div>
+                      <Select
+                        showSearch
+                        placeholder="Select Days"
+                        optionFilterProp="children"
+                        mode="multiple"
+                        onChange={onChangeDay}
+                        onSearch={onSearchDay}
+                        filterOption={(input, option) =>
+                          option.children
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        style={{
+                          width: "200px",
+                        }}
+                      >
+                        {daysData.map((it) => (
+                          <Option value={it}>{it}</Option>
+                        ))}
+                      </Select>
+                    </div>,
+                    <div>
+                      <Select
+                        showSearch
+                        placeholder="Select Delivery"
+                        optionFilterProp="children"
+                        onChange={onChangeDelivery}
+                        onSearch={onSearchDelivery}
+                        filterOption={(input, option) =>
+                          option.children
+                            .toLowerCase()
+                            .includes(input.toLowerCase())
+                        }
+                        style={{
+                          width: "200px",
+                        }}
+                      >
+                        {deliveryData.map((it) => (
+                          <Option value={it}>{it}</Option>
+                        ))}
+                      </Select>
+                    </div>,
+                  ]}
+                >
+                  {cat.items.map((it) => {
                     return (
                       <div
-                        className="w-full bg-white shadow-md rounded-sm px-2 py-2"
-                        onClick={() => console.log(it)}
+                        className="w-full bg-white shadow-md rounded-sm px-2 py-2 my-5 flex justify-between items-center"
+                        onClick={() => addItemtoCart(it)}
+
                       >
-                        {it.name}
-                        <div className="grid gap-2">
-                          <div>
-                            <Select
-                              showSearch
-                              placeholder="Select Days"
-                              optionFilterProp="children"
-                              mode="multiple"
-                              onChange={onChangeDay}
-                              onSearch={onSearchDay}
-                              filterOption={(input, option) =>
-                                option.children
-                                  .toLowerCase()
-                                  .includes(input.toLowerCase())
-                              }
-                              style={{
-                                width: "200px",
-                              }}
-                            >
-                              {daysData.map((it) => (
-                                <Option value={it}>{it}</Option>
-                              ))}
-                            </Select>
-                          </div>
-                          <div>
-                            <Select
-                              showSearch
-                              placeholder="Select Delivery"
-                              optionFilterProp="children"
-                              onChange={onChangeDelivery}
-                              onSearch={onSearchDelivery}
-                              filterOption={(input, option) =>
-                                option.children
-                                  .toLowerCase()
-                                  .includes(input.toLowerCase())
-                              }
-                              style={{
-                                width: "200px",
-                              }}
-                            >
-                              {deliveryData.map((it) => (
-                                <Option value={it}>{it}</Option>
-                              ))}
-                            </Select>
-                          </div>
-                        </div>
+                        {/* <Typography.Title level={6}> */}
+                        <p className="">{it.name}</p>
+                        {/* </Typography.Title> */}
+                        {/* <div className="grid gap-2"> */}
+                        <Image
+                          src={`${fromImageToUrl(
+                            it?.images[0],
+                            "/items/images/"
+                          )}`}
+                        />
+                        {/* </div> */}
                       </div>
                     );
-                  })
-                }
-              </Collapse.Panel>
-            </Collapse>
-          )
-        })}
+                  })}
+                </Collapse.Panel>
+              </Collapse>
+            );
+          })}
 
         {/* <DialogModal
           // title="Dialog modal example"
