@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 // import 'react-date-range/dist/styles.css'; // main style file
 // import 'react-date-range/dist/theme/default.css'; // theme css file
 // import { DateRange, DateRangePicker  } from "react-date-range";
@@ -25,6 +25,7 @@ const Layout = ({ children }) => {
   ]);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   // console.log(range);
 
@@ -43,13 +44,14 @@ const Layout = ({ children }) => {
         <span className="flex justify-between gap-1">
           <div ref={refOne} className="shadow-xl border-1 border-red-300 rounded-full w-14 h-14 grid place-items-center
           ">
-            <Image src={mmaLogo} width="50px" /> 
+            <Image src={mmaLogo} width="50px" preview={false} /> 
           </div>
           <h1 className="text-amber-200 text-xl font-nunito self-end">Mamas Kitchen</h1>
         </span>
         <span
           onClick={() => {
             // dispatch(logOut())
+            navigate("profile");
           }}
         >
           <MdOutlineMenu

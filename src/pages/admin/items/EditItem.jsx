@@ -18,7 +18,8 @@ import { useCreateItemsMutation } from "../../../redux/slices/items/itemsApiSlic
 import APIClient from "../../../utils/axios";
 const { Option } = Select;
 
-const CreateItems = () => {
+const EditItem = ({ editData }) => {
+    console.log({editData});
   const [createItems, { isLoading, isSuccess, isError }] =
     useCreateItemsMutation();
   const [refresh, setRefresh] = useState(false);
@@ -34,13 +35,13 @@ const CreateItems = () => {
   }, [isSuccess]);
 
   async function onFinish(values) {
-      const data = new FormData();
-      data.append("file", values.file[0]?.originFileObj);
-      data.append("name", values.name);
-      data.append("price", values.price);
-      data.append("description", values.description);
-      data.append("category_id", values.category);
-      data.append("food_type", values.food_type);
+    const data = new FormData();
+    data.append("file", values.file[0]?.originFileObj);
+    data.append("name", values.name);
+    data.append("price", values.price);
+    data.append("description", values.description);
+    data.append("category_id", values.category);
+    data.append("food_type", values.food_type);
     console.log(values);
     try {
       // const res = await createItems(data);
@@ -50,16 +51,16 @@ const CreateItems = () => {
         },
       });
       console.log(res);
-      
+
       if (res.status == 201) {
         message.success("Category Cretaed SucccessFully");
         setTimeout(() => {
-          window.location.reload()
-        },2000)
+          window.location.reload();
+        }, 2000);
       }
     } catch (error) {
       console.log(error);
-        message.error("Something Went wrong");
+      message.error("Something Went wrong");
     }
   }
   function onFinishFailed(errorInfo) {
@@ -212,4 +213,4 @@ const CreateItems = () => {
   );
 };
 
-export default CreateItems;
+export default EditItem;

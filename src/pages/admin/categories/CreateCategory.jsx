@@ -17,7 +17,7 @@ const { Option } = Select;
 
 
 const CreateCategory = () => {
-    const [createCategories, { isLoading, isSuccess, isError }] = useCreateCategoriesMutation
+    const [createCategories, { isLoading, isSuccess, isError }] = useCreateCategoriesMutation()
     const [refresh, setRefresh] = useState(false)
 
 useEffect(() => {

@@ -12,9 +12,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
     }),
     createItems: builder.mutation({
       query: (data) => ({
-        url: "/items",
+        url: "/items/create",
         method: "POST",
         body: { ...data },
+        headers: {
+          "content-type": "multipart/form-data",
+        },
       }),
     }),
   }),
