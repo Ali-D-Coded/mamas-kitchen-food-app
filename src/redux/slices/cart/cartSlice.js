@@ -63,7 +63,7 @@ import { createSlice } from "@reduxjs/toolkit";
 // };
 
 const initialState = {
-  items: [],
+  order: [],
   dateRange: [],
   total:''
 
@@ -74,24 +74,28 @@ export const cartSlice = createSlice({
   reducers: {
     // getItemQuantity: (state) => {},
     increaseCartQuantity: (state, action) => {
-      const { day, delivery, foodType, items, totalAmount } = action.payload
-      console.log({
-        day,
-        delivery,
-        foodType,
-        items,
-        totalAmount,
-      });
- 
+      const { category, items } = action.payload
+      const Category = category;
+      let Items = []
+      items.push()
 
-
+      // state.order.push({ category: category, items: items }); 
+    },
+    calculateTotal: (state, action) => {
+      const {dateRange } = action.payload
+      state.dateRange = dateRange;
+      // console.log(state.dateRange);
     },
     decreaseCartQuantity: (state, action) => {},
     removeFromCart: (state) => {},
   },
 });
 
-export const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } =
-  cartSlice.actions;
+export const {
+  increaseCartQuantity,
+  decreaseCartQuantity,
+  removeFromCart,
+  calculateTotal,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

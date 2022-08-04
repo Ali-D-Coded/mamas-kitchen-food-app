@@ -94,7 +94,7 @@ navigate("create-items");
      var dataGood = itemData.map((it) => ({
        key: it.id,
        name: it.name,
-       category: it.category,
+       category: it.category.name,
        description: it.description,
        price: it.price,
        food_type: it.food_type,
@@ -102,7 +102,7 @@ navigate("create-items");
    }
 
    console.log(dataGood);
-   const [selectionType, setSelectionType] = useState("checkbox");
+  //  const [selectionType, setSelectionType] = useState("checkbox");
   return (
     <div className="pt-10 px-5">
       <PageHeader
@@ -117,7 +117,7 @@ navigate("create-items");
             value={search}
             name={search}
             onChange={(e) => onSearch(e)}
-            style={{ width: 200, height: 30 }}
+            // style={{ width: 200, height: 30 }}
           />,
           <Button key="1" type="primary" onClick={showDrawer}>
             Create Meals
@@ -130,15 +130,15 @@ navigate("create-items");
               <div className="px-5">
                 <Table
                   loading={isLoading}
-                  rowSelection={{
-                    type: selectionType,
-                    ...rowSelection,
-                  }}
+                  // rowSelection={{
+                  //   type: selectionType,
+                  //   ...rowSelection,
+                  // }}
                   // columns={columns}
                   dataSource={dataGood}
                   scroll={{
-                    y: 400,
-                    x: 600,
+                    y: 500,
+                    // x: 600,
                   }}
                 >
                   <Column dataIndex="name" title="Name" />

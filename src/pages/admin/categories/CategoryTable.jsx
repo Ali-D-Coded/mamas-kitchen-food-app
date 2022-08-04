@@ -13,27 +13,20 @@ import { useGetCategoriesQuery } from "../../../redux/slices/items/categoriesApi
     {
       dataIndex: "actions",
       title: "Actions",
-      render: () => <Button>Edit</Button>,
+
+      render: (record) => {
+      
+        return (
+          <div className="flex gap-3">
+            <Button onClick={() => console.log(record)}>Edit</Button>
+            <Button onClick={() => console.log(record)}>Delete</Button>
+          </div>
+        );
+      },
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "Hot Platter",
-      items: [{ name: "iu" }, { name: "iu" }, { name: "iu" }],
-    },
-    {
-      key: "1",
-      name: "Cold Platter",
-      items: [{ name: "iu" }, { name: "iu" }, { name: "iu" }],
-    },
-    {
-      key: "1",
-      name: "Foul",
-      items: [{ name: "iu" }, { name: "iu" }, { name: "iu" }],
-    },
-  ];
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
       console.log(
@@ -63,6 +56,7 @@ import { useGetCategoriesQuery } from "../../../redux/slices/items/categoriesApi
         key: it.id,
         name: it.name,
         items: it.items,
+        actions:it,
       }));
     }
     // const { Search } = Input;

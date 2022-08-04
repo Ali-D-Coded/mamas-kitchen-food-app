@@ -1,3 +1,4 @@
+import { Button, Result } from 'antd';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
@@ -6,15 +7,13 @@ const UnAuthorized = () => {
     const goBack = () => navigate(-1)
     
     return (
-      <section>
-    <h1>UnAuthorized</h1>
-            <br />
-            <p>You do not have access to the requested page. </p>
-            <div className=''>
-                <button onClick={goBack}>Go Back</button>
-            </div>
-      </section>
-  )
+      <Result
+        status="403"
+        title="403"
+        subTitle="Sorry, you are not authorized to access this page."
+        extra={<Button type="primary" onClick={goBack}>Back Home</Button>}
+      />
+    );
 }
 
 export default UnAuthorized

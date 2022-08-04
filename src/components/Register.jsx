@@ -24,7 +24,7 @@ import CustomTextField from "./CustomTextField";
 import { useDispatch } from "react-redux";
 import jsCookie from "js-cookie";
 import { useRegisterMutation } from "../redux/slices/auth/signUpAuthApiSlice";
-import { Button, Checkbox, Form, Input, Select } from "antd";
+import { Button, Checkbox, Form, Input, message, Select } from "antd";
 import TextArea from "antd/lib/input/TextArea";
 
 
@@ -52,7 +52,7 @@ import TextArea from "antd/lib/input/TextArea";
 // });
 
 const PHONE_REGEX = /^((\+)?(\d{2}[-]))?(\d{10}){1}?$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@H$%]).{8,24}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@H$%]).{6,24}$/;
 
 const initialValues = {
   id: "",
@@ -91,7 +91,7 @@ const Register = () => {
     userRef.current?.focus();
   }, []);
 
-  const [register, { isLoading }] = useRegisterMutation();
+  const [register, { isLoading,isSuccess,isError }] = useRegisterMutation();
   const dispatch = useDispatch();
 
   const [formValues, setFormValues] = useState(initialValues);
@@ -147,11 +147,14 @@ const Register = () => {
       }).unwrap();
       console.log(userData);
 formRef.current.resetFields();
-      navigate("/auth");
+      window.location.reload()
     } catch (err) {
-      if (!err?.response) {
+      console.log('====================================');
+      console.log(err);
+      console.log('====================================');
+      if (!err) {
         setErrMsg("No server Response");
-      } else if (err.response?.status === 409) {
+      } else if (err?.status === 409) {
         setErrMsg("Mobile Number already in use");
       } else {
         setErrMsg("Registeration failed");
@@ -159,6 +162,7 @@ formRef.current.resetFields();
       errRef.current.focus();
     }
   };
+  if(isSuccess) message.success("Success")
 
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -339,7 +343,7 @@ formRef.current.resetFields();
                   }));
                 }}
                 rows={2}
-                placeholder="address type"
+                placeholder="address"
               />
             </Form.Item>
             <Form.Item name="addressType">
