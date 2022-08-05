@@ -19,7 +19,8 @@ import APIClient from "../../../utils/axios";
 const { Option } = Select;
 
 const EditItem = ({ editData }) => {
-    console.log({editData});
+  console.log({ editData });
+    const [form] = Form.useForm()
   const [createItems, { isLoading, isSuccess, isError }] =
     useCreateItemsMutation();
   const [refresh, setRefresh] = useState(false);
@@ -36,7 +37,7 @@ const EditItem = ({ editData }) => {
 
   async function onFinish(values) {
     const data = new FormData();
-    data.append("file", values.file[0]?.originFileObj);
+    // data.append("file", values.file[0]?.originFileObj);
     data.append("name", values.name);
     data.append("price", values.price);
     data.append("description", values.description);
@@ -54,9 +55,9 @@ const EditItem = ({ editData }) => {
 
       if (res.status == 201) {
         message.success("Category Cretaed SucccessFully");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2000);
       }
     } catch (error) {
       console.log(error);
@@ -96,19 +97,19 @@ const EditItem = ({ editData }) => {
         hideRequiredMark
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        encType
+        initialValues={{
+          name: editData.name,
+          price: editData.price,
+          description: editData.description,
+          category: editData.category_id,
+          food_type: editData.food_type,
+        }}
       >
         <Row>
           <Col span={24}>
             <Form.Item
               name="name"
               label="Name"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter user name",
-                },
-              ]}
             >
               <Input placeholder="name" />
             </Form.Item>
@@ -119,12 +120,7 @@ const EditItem = ({ editData }) => {
             <Form.Item
               name="price"
               label="Price"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Price",
-                },
-              ]}
+             
             >
               <Input placeholder="price " />
             </Form.Item>
@@ -141,13 +137,7 @@ const EditItem = ({ editData }) => {
           <Col span={24}>
             <Form.Item
               name="category"
-              label="Category"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Price",
-                },
-              ]}
+              label="Category"           
             >
               <Select placeholder="select category">
                 {catSuccess &&
@@ -162,13 +152,7 @@ const EditItem = ({ editData }) => {
           <Col span={24}>
             <Form.Item
               name="food_type"
-              label="Foo Type"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter Price",
-                },
-              ]}
+              label="Foo Type"          
             >
               <Select placeholder="Select Food Type">
                 <Option value="BREAKFAST">BREAKFAST</Option>
@@ -183,12 +167,7 @@ const EditItem = ({ editData }) => {
             <Form.Item
               name="file"
               label="Upload"
-              rules={[
-                {
-                  required: true,
-                  message: "Required",
-                },
-              ]}
+    
               valuePropName="fileList"
               getValueFromEvent={normFile}
             >

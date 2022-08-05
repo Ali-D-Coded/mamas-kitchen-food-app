@@ -5,7 +5,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 // import { DateRange, DateRangePicker  } from "react-date-range";
 import { addDays, format } from "date-fns";
 import "./daterange.css";
-import { MdOutlineMenu } from "react-icons/md";
+import { MdOutlineMenu, MdPerson } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { logOut } from "../redux/slices/auth/authSlice";
 import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
@@ -42,11 +42,16 @@ const Layout = ({ children }) => {
           </span> */}
 
         <span className="flex justify-between gap-1">
-          <div ref={refOne} className="shadow-xl border-1 border-red-300 rounded-full w-14 h-14 grid place-items-center
-          ">
-            <Image src={mmaLogo} width="50px" preview={false} /> 
+          <div
+            ref={refOne}
+            className="shadow-xl border-1 border-red-300 rounded-full w-14 h-14 grid place-items-center
+          "
+          >
+            <Image src={mmaLogo} width="50px" preview={false} />
           </div>
-          <h1 className="text-amber-200 text-xl font-nunito self-end">Mamas Kitchen</h1>
+          <h1 className="text-amber-200 text-xl font-nunito self-end">
+            Mamas Kitchen
+          </h1>
         </span>
         <span
           onClick={() => {
@@ -54,10 +59,15 @@ const Layout = ({ children }) => {
             navigate("profile");
           }}
         >
-          <MdOutlineMenu
+          <MdPerson
             className="text-white font-thin text-4xl"
             fontSize="medium"
+            
           />
+          {/* <UserOutlined
+            className="text-white font-thin text-4xl"
+            fontSize="medium"
+          /> */}
         </span>
       </div>
       <div>{children}</div>

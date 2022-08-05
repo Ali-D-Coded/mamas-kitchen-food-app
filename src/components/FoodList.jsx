@@ -42,40 +42,58 @@ import {
 } from "antd";
 import {
   calculateTotal,
+  currentDateRange,
   increaseCartQuantity,
+  setTime,
 } from "../redux/slices/cart/cartSlice";
 import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { useGetCategoriesQuery } from "../redux/slices/items/categoriesApiSlice";
 import moment from "moment";
+const CheckboxGroup = Checkbox.Group;
+const plainOptions = [
+  "SUNDAY",
+  "MONDAY",
+  "TUESDAY",
+  "WEDNESDAY",
+  "THURSDAY",
+  "FRIDAY",
+  "SATURDAY",
+];
+const defaultCheckedList = ["SUNDAY", "MONDAY", "TUESDAY"];
 
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY/MM/DD";
-const rangeConfig = {
-  rules: [
-    {
-      type: "array",
-      required: true,
-      message: "Please select time!",
-    },
-  ],
-};
+
 const FoodList = () => {
+  const [checkedList, setCheckedList] = useState(defaultCheckedList);
+  const [indeterminate, setIndeterminate] = useState(true);
+  const [checkAll, setCheckAll] = useState(false);
   const dispatch = useDispatch();
-  const itemRef = useRef()
-  const formRef = useRef(null)
+  const itemRef = useRef();
+  const formRef = useRef(null);
   const [selectedType, setSelectedType] = useState(1);
   const selectedFoodType = useSelector(selectCurrentFoodType);
   const [itemData, setItemData] = useState();
-  const [selectedCategories, setSelectedCategories] = useState();
+  const [selectedCategories, setSelectedCategories] = useState({
+    id: null,
+    days: []
+  });
   const [selectedItems, setSelectedItems] = useState();
 
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDelivery, setSelectedDelivery] = useState();
+  const dt = useSelector(currentDateRange);
+
+  
 
   // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
 
   const onClick = (dt) => {
+    // console.log('=================dt===================');
+    // console.log(dt);
+    // console.log('====================================');
+     dispatch(setTime({ time: dt }));
     dispatch(setFoodType(dt));
     setSelectedType(dt.id);
   };
@@ -96,26 +114,36 @@ const FoodList = () => {
     setItemData(items);
   }, [selectedFoodType]);
 
-  // console.log("daysData", daysData.filter(it => {
-  //   return !selectedDays.includes(it) && it
-  // }),selectedDays);
-
-  // console.log("itemData :", isSuccess && items?.map((it) => it.items));
-
   const onProceed = () => {
     console.log("Proceed clicked");
   };
-  const onChange = (checkedValues) => {
-    console.log("categoroes = ", checkedValues);
-    setSelectedCategories(checkedValues);
-    setItemData((prev) => {
-      console.log(prev);
-    });
-  };
+  // const onChange = (checkedValues) => {
+  //   console.log("categoroes = ", checkedValues);
+  //   setSelectedCategories(checkedValues);
+  //   setItemData((prev) => {
+  //     console.log(prev);
+  //   });
+  // };
   const onChangeDay = (value) => {
     console.log(`selected ${value}`);
-    setSelectedDays(value);
+    setSelectedCategories(prev => {
+      let dat = prev.days
+      dat = dat.filter(it => it !== value)
+      console.log('====dat================================');
+      console.log(dat);
+      console.log('=======dat=============================');
+      return {
+        ...prev,
+        days: dat
+      }
+   })
+    
+      setSelectedDays(value);
   };
+
+  // console.log('====================================');
+  // console.log(selectedDays);
+  // console.log('====================================');
   const onSearchDay = (value) => {
     console.log("search:", value);
   };
@@ -126,24 +154,69 @@ const FoodList = () => {
     var foodType = PlansDt;
   }
   function addItemtoCart(values) {
-    setSelectedItems([{
-      items: values,
-    }]);
+    setSelectedItems([
+      {
+        items: values,
+      },
+    ]);
     // console.log(values);
   }
 
   const onChangeDate = (value) => {
     const dates = value.map((it) => it._d);
     console.log(dates);
-    // dispatch(calculateTotal({ dateRange: new Date(dates) }));
+    // setDateR(dates);
+    dispatch(calculateTotal({ dateRange: dates}));
   };
+  
 
   const onFinish = (values) => {
     console.log({ values, itm: selectedItems });
-    const items = []
-    
+    const items = [];
+
     // dispatch(increaseCartQuantity({category:selectedItems.category_id,items: }));
   };
+
+  const onChangeCheckBox = (list) => {
+    setCheckedList(list);
+    setIndeterminate(!!list.length && list.length < plainOptions.length);
+    setCheckAll(list.length === plainOptions.length);
+  };
+
+  const onCheckAllChange = (e) => {
+    setCheckedList(e.target.checked ? plainOptions : []);
+    setIndeterminate(false);
+    setCheckAll(e.target.checked);
+  };
+
+  // console.log(checkedList);
+
+    const onPositionChange = (newExpandIconPosition) => {
+      setExpandIconPosition(newExpandIconPosition);
+    };
+
+  
+
+    const genExtra = () => (
+      <SettingOutlined
+        onClick={(event) => {
+          // If you don't want click extra trigger collapse, you can prevent this:
+          event.stopPropagation();
+        }}
+      />
+  );
+  const onChangeCollapse = (key) => {
+    console.log(key);
+    setSelectedCategories({
+      id: key,
+      days: checkedList,
+    });
+
+  }
+
+  // console.log('====================================');
+  // console.log(selectedCategories);
+  // console.log('====================================');
 
   let content;
   if (isLoading) {
@@ -170,27 +243,49 @@ const FoodList = () => {
           </div>
         </div>
         <div>
-          <Form.Item name="range-picker" {...rangeConfig}>
-            <RangePicker size="small" onChange={onChangeDate} />
-          </Form.Item>
+         
+            <RangePicker
+              size="small"
+              onChange={onChangeDate}
+              defaultValue={dt && [
+                moment(dt[0], "YYYY/MM/DD"),
+                moment(dt[1], "YYYY/MM/DD"),
+              ]}
+            />
+     
+        </div>
+
+        <div className="text-center pl-2">
+          <Checkbox
+            indeterminate={indeterminate}
+            onChange={onCheckAllChange}
+            checked={checkAll}
+          >
+            Check all
+          </Checkbox>
+          <hr className="my-2" />
+          {/* <Divider /> */}
+          <div className="flex">
+            <CheckboxGroup
+              options={plainOptions}
+              value={checkedList}
+              onChange={onChangeCheckBox}
+            />
+          </div>
         </div>
         <Divider />
 
         {isSuccess &&
           lodesh.flatten(itemData).map((cat) => {
             return (
-              <Collapse className="w-[90%]" accordion key={cat.id}>
-                <Collapse.Panel header={cat.name} key={cat.name}>
+              <Collapse
+                className="w-[90%]"
+                accordion={true}
+                key={cat.id}
+                onChange={onChangeCollapse}
+              >
+                <Collapse.Panel header={cat.name} key={cat.id}>
                   {cat.items.map((it) => {
-                    const daysData = [
-                      "SUNDAY",
-                      "MONDAY",
-                      "TUESDAY",
-                      "WEDNESDAY",
-                      "THURSDAY",
-                      "FRIDAY",
-                      "SATURDAY",
-                    ];
                     return (
                       <Form name="cart" onFinish={onFinish} ref={formRef}>
                         <div
@@ -200,11 +295,12 @@ const FoodList = () => {
                         >
                           <div className="flex justify-between">
                             <div className="flex flex-col items-center ">
-                             
                               <p className="">{it.name}</p>
-                           
 
-                              <Form.Item name="days" rules={ [{required: true}]}>
+                              <Form.Item
+                                name="days"
+                                rules={[{ required: true }]}
+                              >
                                 <Select
                                   allowClear
                                   showSearch
@@ -222,7 +318,7 @@ const FoodList = () => {
                                     width: "200px",
                                   }}
                                 >
-                                  {daysData.map((it) => (
+                                  {selectedCategories?.days?.map((it) => (
                                     <Select.Option value={it}>
                                       {it}
                                     </Select.Option>
@@ -241,7 +337,12 @@ const FoodList = () => {
                             </div>
                           </div>
                           <Form.Item className="w-full">
-                            <Button type="primary" htmlType="submit" className="w-full" onClick={() => addItemtoCart(it)}>
+                            <Button
+                              type="primary"
+                              htmlType="submit"
+                              className="w-full"
+                              onClick={() => addItemtoCart(it)}
+                            >
                               OK
                             </Button>
                           </Form.Item>

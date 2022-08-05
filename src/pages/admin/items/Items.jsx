@@ -31,6 +31,7 @@ navigate("create-items");
   };
   const onCloseEdit = () => {
     setVisibleEdit(false);
+    window.location.reload()
   };
     // const { Search } = Input;
   const onSearch = (e) => setSearch(e.target.value)
@@ -98,6 +99,7 @@ navigate("create-items");
        description: it.description,
        price: it.price,
        food_type: it.food_type,
+      action: it
      }));
    }
 
@@ -185,11 +187,11 @@ navigate("create-items");
         }}
         extra={
           <Space>
-            <Button onClick={onCloseEdit}>Cancel</Button>
+            <Button onClick={onCloseEdit} >Cancel</Button>
           </Space>
         }
       >
-        <EditItem editData={editData} />
+        <EditItem editData={editData} close={onCloseEdit} />
       </Drawer>
     </div>
   );
