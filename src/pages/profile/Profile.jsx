@@ -6,10 +6,14 @@ import { useGetUserMeQuery } from "../../redux/slices/user/userApiSlice";
 import { format } from "date-fns";
 import mmaLogo from "../../assets/mamasLogo.png";
 const { TabPane } = Tabs;
+import { IoLogOut } from "react-icons/io5";
+import { logOut } from "../../redux/slices/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Profile = () => {
   const { data, isLoading, isSuccess } = useGetUserMeQuery();
   console.log(isSuccess && data);
+  const dispatch = useDispatch();
   return (
     <div className="flex flex-col  h-screen">
       {/* <Link to="/">
@@ -22,7 +26,6 @@ const Profile = () => {
         <div className="absolute top-0 w-full shadow-md py-2 px-5">
           <span className="flex justify-between gap-1">
             <div
-              
               className="shadow-xl border-1 border-red-300 rounded-full w-14 h-14 grid place-items-center
           "
             >
@@ -30,8 +33,12 @@ const Profile = () => {
                 <Image src={mmaLogo} width="50px" preview={false} />
               </Link>
             </div>
-            <h1 className="text-amber-200 text-xl font-nunito self-end">
+            <h1 className="text-amber-200 text-xl font-nunito self-end flex justify-between gap-3 items-center">
               Mamas Kitchen
+              <IoLogOut
+                className="text-3xl"
+                onClick={() => dispatch(logOut())}
+              />
             </h1>
           </span>
         </div>

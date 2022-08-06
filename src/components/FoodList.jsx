@@ -41,10 +41,12 @@ import {
   Input,
 } from "antd";
 import {
-  calculateTotal,
+  setDateRange,
   currentDateRange,
   increaseCartQuantity,
   setTime,
+  setTotalAmount,
+  currentItems,
 } from "../redux/slices/cart/cartSlice";
 import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { useGetCategoriesQuery } from "../redux/slices/items/categoriesApiSlice";
@@ -76,15 +78,15 @@ const FoodList = () => {
   const [itemData, setItemData] = useState();
   const [selectedCategories, setSelectedCategories] = useState({
     id: null,
-    days: []
+    days: [],
   });
   const [selectedItems, setSelectedItems] = useState();
+  const [allItems, setAllitems] = useState([]);
 
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDelivery, setSelectedDelivery] = useState();
   const dt = useSelector(currentDateRange);
-
-  
+const selectedItemData = useSelector(currentItems);
 
   // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
@@ -93,7 +95,6 @@ const FoodList = () => {
     // console.log('=================dt===================');
     // console.log(dt);
     // console.log('====================================');
-     dispatch(setTime({ time: dt }));
     dispatch(setFoodType(dt));
     setSelectedType(dt.id);
   };
@@ -104,7 +105,7 @@ const FoodList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetItemsQuery(selectedFoodType?.name);
+  } = useGetItemsQuery(selectedFoodType?.name || "BREAKFAST");
 
   const { data: categoryData, isSuccess: catgorySucess } =
     useGetCategoriesQuery();
@@ -114,32 +115,37 @@ const FoodList = () => {
     setItemData(items);
   }, [selectedFoodType]);
 
+  // console.log('====================================');
+  // console.log({ dt, selectedItemData });
+  // console.log('====================================');
+
+  useEffect(() => {
+    console.log("from useEffect");
+    let mount = true;
+    if (mount) {
+      dispatch(setTotalAmount());
+    }
+    return () => {
+      mount = false;
+    };
+  }, [dt, selectedItemData]);
+
   const onProceed = () => {
     console.log("Proceed clicked");
   };
-  // const onChange = (checkedValues) => {
-  //   console.log("categoroes = ", checkedValues);
-  //   setSelectedCategories(checkedValues);
-  //   setItemData((prev) => {
-  //     console.log(prev);
-  //   });
-  // };
+
   const onChangeDay = (value) => {
     console.log(`selected ${value}`);
-    setSelectedCategories(prev => {
-      let dat = prev.days
-      dat = dat.filter(it => it !== value)
-      console.log('====dat================================');
-      console.log(dat);
-      console.log('=======dat=============================');
+    setSelectedCategories((prev) => {
       return {
         ...prev,
-        days: dat
-      }
-   })
-    
-      setSelectedDays(value);
+        days: prev.days.filter(it => it !== value),
+      };
+    });
+
+    setSelectedDays(value);
   };
+  // console.log({selectedCategories});
 
   // console.log('====================================');
   // console.log(selectedDays);
@@ -151,14 +157,18 @@ const FoodList = () => {
   const { data: PlansDt, isSuccess: plansSucces } = useGetAllPlansQuery();
 
   if (plansSucces) {
+// console.log(PlansDt);
     var foodType = PlansDt;
+      dispatch(
+        setTime({
+          breakfast: PlansDt?.find((it) => it.name == "BREAKFAST").planDetails,
+          lunch: PlansDt?.find((it) => it.name == "LUNCH").planDetails,
+          dinner: PlansDt?.find((it) => it.name == "DINNER").planDetails,
+        })
+      );
   }
   function addItemtoCart(values) {
-    setSelectedItems([
-      {
-        items: values,
-      },
-    ]);
+    setSelectedItems(values);
     // console.log(values);
   }
 
@@ -166,16 +176,37 @@ const FoodList = () => {
     const dates = value.map((it) => it._d);
     console.log(dates);
     // setDateR(dates);
-    dispatch(calculateTotal({ dateRange: dates}));
+    dispatch(setDateRange({ dateRange: dates }));
   };
-  
 
   const onFinish = (values) => {
     console.log({ values, itm: selectedItems });
     const items = [];
+      if (allItems?.find((it) => it.item.id == selectedItems.id) == null) {
+        setAllitems((prev) => {
+          return [
+            ...prev,
+            {
+              days: values.days,
+              item: selectedItems,
+            },
+          ];
+        });
+    }
+    
+    dispatch(
+      increaseCartQuantity({
+        days: values.days,
+        items: selectedItems,
+      })
+    );
 
     // dispatch(increaseCartQuantity({category:selectedItems.category_id,items: }));
   };
+
+  // console.log("===================allItems=================");
+  // console.log(allItems);
+  // console.log("=====================allItems===============");
 
   const onChangeCheckBox = (list) => {
     setCheckedList(list);
@@ -191,19 +222,17 @@ const FoodList = () => {
 
   // console.log(checkedList);
 
-    const onPositionChange = (newExpandIconPosition) => {
-      setExpandIconPosition(newExpandIconPosition);
-    };
+  const onPositionChange = (newExpandIconPosition) => {
+    setExpandIconPosition(newExpandIconPosition);
+  };
 
-  
-
-    const genExtra = () => (
-      <SettingOutlined
-        onClick={(event) => {
-          // If you don't want click extra trigger collapse, you can prevent this:
-          event.stopPropagation();
-        }}
-      />
+  const genExtra = () => (
+    <SettingOutlined
+      onClick={(event) => {
+        // If you don't want click extra trigger collapse, you can prevent this:
+        event.stopPropagation();
+      }}
+    />
   );
   const onChangeCollapse = (key) => {
     console.log(key);
@@ -211,8 +240,7 @@ const FoodList = () => {
       id: key,
       days: checkedList,
     });
-
-  }
+  };
 
   // console.log('====================================');
   // console.log(selectedCategories);
@@ -243,16 +271,13 @@ const FoodList = () => {
           </div>
         </div>
         <div>
-         
-            <RangePicker
-              size="small"
-              onChange={onChangeDate}
-              defaultValue={dt && [
-                moment(dt[0], "YYYY/MM/DD"),
-                moment(dt[1], "YYYY/MM/DD"),
-              ]}
-            />
-     
+          <RangePicker
+            size="small"
+            onChange={onChangeDate}
+            defaultValue={
+              dt && [moment(dt[0], "YYYY/MM/DD"), moment(dt[1], "YYYY/MM/DD")]
+            }
+          />
         </div>
 
         <div className="text-center pl-2">

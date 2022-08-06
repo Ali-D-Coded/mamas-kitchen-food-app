@@ -6,7 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { addDays, format } from "date-fns";
 import "./daterange.css";
 import { MdOutlineMenu, MdPerson } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../redux/slices/auth/authSlice";
 import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
 import * as lodesh from "lodash";
@@ -14,6 +14,7 @@ import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { Image, Radio } from "antd";
 import { setFoodType } from "../redux/slices/items/itemSlice";
 import mmaLogo from "../assets/mamasLogo.png"
+import { currentTotal } from "../redux/slices/cart/cartSlice";
 
 const Layout = ({ children }) => {
   const [range, setRange] = useState([
@@ -26,6 +27,7 @@ const Layout = ({ children }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate()
+  const Total = useSelector(currentTotal)
 
   // console.log(range);
 
@@ -62,7 +64,6 @@ const Layout = ({ children }) => {
           <MdPerson
             className="text-white font-thin text-4xl"
             fontSize="medium"
-            
           />
           {/* <UserOutlined
             className="text-white font-thin text-4xl"
@@ -76,7 +77,7 @@ const Layout = ({ children }) => {
       <div className="fixed bottom-0 z-1000 w-full py-6 bg-[#99353D] self-end text-white flex justify-around items-center">
         <span>Total</span>
         <span className="rounded-2xl border border-white text-center w-28 py-1">
-          0 AED
+          {Total} AED
         </span>
         <span className="text-2xl">></span>
       </div>
