@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, Link } from "react-router-dom";
 // import 'react-date-range/dist/styles.css'; // main style file
 // import 'react-date-range/dist/theme/default.css'; // theme css file
 // import { DateRange, DateRangePicker  } from "react-date-range";
 import { addDays, format } from "date-fns";
 import "./daterange.css";
-import { MdOutlineMenu, MdPerson } from "react-icons/md";
+import { MdOutlineMenu, MdPerson, MdKeyboardArrowRight } from "react-icons/md";
+
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../redux/slices/auth/authSlice";
 import { useGetItemsQuery } from "../redux/slices/items/itemsApiSlice";
@@ -13,7 +14,7 @@ import * as lodesh from "lodash";
 import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { Image, Radio } from "antd";
 import { setFoodType } from "../redux/slices/items/itemSlice";
-import mmaLogo from "../assets/mamasLogo.png"
+import mmaLogo from "../assets/mamasLogo.png";
 import { currentTotal } from "../redux/slices/cart/cartSlice";
 
 const Layout = ({ children }) => {
@@ -26,15 +27,13 @@ const Layout = ({ children }) => {
   ]);
 
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const Total = useSelector(currentTotal)
+  const navigate = useNavigate();
+  const Total = useSelector(currentTotal);
 
   // console.log(range);
 
   // const [open, setOpen] = useState(false)
   const refOne = useRef(null);
-
-  
 
   return (
     <div className=" relative h-screen">
@@ -79,7 +78,12 @@ const Layout = ({ children }) => {
         <span className="rounded-2xl border border-white text-center w-28 py-1">
           {Total} AED
         </span>
-        <span className="text-2xl">></span>
+        <Link to="payment">
+          <span className="text-white flex items-center gap-1">
+            pay now
+            <MdKeyboardArrowRight className="text-white text-3xl" />
+          </span>
+        </Link>
       </div>
     </div>
   );

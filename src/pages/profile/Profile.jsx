@@ -14,6 +14,10 @@ const Profile = () => {
   const { data, isLoading, isSuccess } = useGetUserMeQuery();
   console.log(isSuccess && data);
   const dispatch = useDispatch();
+  function logout() {
+    
+     dispatch(logOut())
+  }
   return (
     <div className="flex flex-col  h-screen">
       {/* <Link to="/">
@@ -37,7 +41,7 @@ const Profile = () => {
               Mamas Kitchen
               <IoLogOut
                 className="text-3xl"
-                onClick={() => dispatch(logOut())}
+                onClick={logout}
               />
             </h1>
           </span>

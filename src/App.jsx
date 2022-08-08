@@ -21,6 +21,8 @@ import Categories from "./pages/admin/categories/Categories";
 import Sidebar from "./components/Sidebar";
 import CreateItems from "./pages/admin/items/CreateItems";
 import Orders from "./pages/admin/orders/Orders";
+import SuccessPayment from "./pages/payment/SuccessPayment";
+import { CancelledPayment } from "./pages/payment/CancelledPayment";
 
 function App() {
   return (
@@ -36,65 +38,67 @@ function App() {
         />
         <Route path="profile" element={<Profile />} />
         <Route path="payment" element={<Payment />} />
+        <Route path="payment-success" element={<SuccessPayment />} />
+        <Route path="payment-cancelled" element={<CancelledPayment />} />
       </Route>
 
       <Route element={<RequireAdminAuth allowedRoles={1} />}>
-      <Route
-        path="admin/dashboard"
-        element={
-          <Sidebar>
-            <Dashboard />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/users"
-        element={
-          <Sidebar>
-            <Users />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/items"
-        element={
-          <Sidebar>
-            <Items />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/plans"
-        element={
-          <Sidebar>
-            <Plans />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/categories"
-        element={
-          <Sidebar>
-            <Categories />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/items/create-items"
-        element={
-          <Sidebar>
-            <CreateItems />
-          </Sidebar>
-        }
-      />
-      <Route
-        path="admin/dashboard/orders"
-        element={
-          <Sidebar>
-            <Orders />
-          </Sidebar>
-        }
-      />
+        <Route
+          path="admin/dashboard"
+          element={
+            <Sidebar>
+              <Dashboard />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/users"
+          element={
+            <Sidebar>
+              <Users />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/items"
+          element={
+            <Sidebar>
+              <Items />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/plans"
+          element={
+            <Sidebar>
+              <Plans />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/categories"
+          element={
+            <Sidebar>
+              <Categories />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/items/create-items"
+          element={
+            <Sidebar>
+              <CreateItems />
+            </Sidebar>
+          }
+        />
+        <Route
+          path="admin/dashboard/orders"
+          element={
+            <Sidebar>
+              <Orders />
+            </Sidebar>
+          }
+        />
       </Route>
 
       <Route path="auth" element={<AuthPage />} />

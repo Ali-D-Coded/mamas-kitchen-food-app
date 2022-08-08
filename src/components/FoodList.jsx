@@ -46,7 +46,7 @@ import {
   increaseCartQuantity,
   setTime,
   setTotalAmount,
-  currentItems,
+  currentCartItems,
 } from "../redux/slices/cart/cartSlice";
 import { useGetAllPlansQuery } from "../redux/slices/items/getPlans";
 import { useGetCategoriesQuery } from "../redux/slices/items/categoriesApiSlice";
@@ -65,8 +65,8 @@ const defaultCheckedList = ["SUNDAY", "MONDAY", "TUESDAY"];
 
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY/MM/DD";
-
 const FoodList = () => {
+  
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
@@ -86,7 +86,7 @@ const FoodList = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDelivery, setSelectedDelivery] = useState();
   const dt = useSelector(currentDateRange);
-const selectedItemData = useSelector(currentItems);
+const selectedItemData = useSelector(currentCartItems);
 
   // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
@@ -333,7 +333,7 @@ const selectedItemData = useSelector(currentItems);
                                   optionFilterProp="children"
                                   mode="multiple"
                                   onChange={onChangeDay}
-                                  onSearch={onSearchDay}
+                                  // onSearch={onSearchDay}
                                   filterOption={(input, option) =>
                                     option.children
                                       .toLowerCase()
