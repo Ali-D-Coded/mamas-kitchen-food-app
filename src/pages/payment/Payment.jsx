@@ -1,19 +1,75 @@
-import { Button, Image, List, Tag } from "antd";
-import React from "react";
+import {
+  Button,
+  Cascader,
+  Form,
+  Image,
+  Input,
+  List,
+  Modal,
+  Select,
+  Tag,
+} from "antd";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import mmaLogo from "../../assets/mamasLogo.png";
 import { MdKeyboardArrowLeft } from "react-icons/md";
 import { useSelector } from "react-redux";
-import { currentCartItems, removeFromCart } from "../../redux/slices/cart/cartSlice";
+import {
+  currentCartItems,
+  removeFromCart,
+} from "../../redux/slices/cart/cartSlice";
 import { fromImageToUrl } from "../../utils/urls";
 import { CheckoutButton } from "../../components/CheckoutButton";
 
 const StrpeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY;
 const Payment = () => {
-  const cartItems = useSelector(currentCartItems)
+  const cartItems = useSelector(currentCartItems);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [deliveyDay, setDeliveyDay] = useState([]);
+  const form = Form.useFormInstance();
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   function removeFromCart(item) {
     console.log(item);
+    
   }
+
+  function handleDelivery(day, del) {
+    console.log({ day, del });
+    setDeliveyDay((prev) => [
+      ...prev,
+      {
+        day: day,
+        del: del,
+      },
+    ]);
+  }
+  function handleDay(value) {
+    console.log({ value });
+  }
+
+  console.log({ deliveyDay });
+
+  const days = [
+    "SUNDAY",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+  ];
+
   return (
     <div className=" relative h-screen">
       <div className="py-2 sticky top-0 z-10 bg-[#99353D] flex justify-between px-5 items-center">
@@ -33,7 +89,7 @@ const Payment = () => {
           <Image src={mmaLogo} width="50px" preview={false} />
         </div>
       </div>
-      <main className=" h-[70%] mx-5 my-5 mb-10">
+      <main className=" h-[80%] mx-5 mt-5 overflow-y-scroll">
         <List
           className="mb-30"
           dataSource={cartItems}
@@ -65,16 +121,49 @@ const Payment = () => {
               />
             </List.Item>
           )}
-        ></List>
+        />
       </main>
       <div className="fixed bottom-0 z-1000 w-full py-6 bg-[#99353D] self-end text-white flex justify-around items-center">
-        {cartItems && <CheckoutButton cartItems={cartItems} />}
+        {cartItems && (
+          <Button onClick={showModal} type="primary">
+            Set Delivery Options
+          </Button>
+        )}
       </div>
+      <Modal
+        title="Basic Modal"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <CheckoutButton cartItems={cartItems} deliveryDetes={deliveyDay} />,
+        ]}
+      >
+        <List
+          className="mb-30"
+          dataSource={days}
+          renderItem={(item) => (
+            <List.Item
+              // onMouseLeave={() => handleDay(item)}
+              actions={[
+                <select
+                  placeholder="Select Delivery"
+                  className=" w-28 h-8 text-center border rounded text-black"
+                  onChange={(e) => handleDelivery(item, e.target.value)}
+                >
+                  <option defaultValue>None</option>
+                  <option>HOME</option>
+                  <option>WORK</option>
+                </select>,
+              ]}
+            >
+              <List.Item.Meta title={item} />
+            </List.Item>
+          )}
+        />
+      </Modal>
     </div>
   );
 };
 
 export default Payment;
-
-
-

@@ -8,6 +8,7 @@ const initialState = {
   breakfast: null,
   lunch: null,
   dinner: null,
+  delivery: [],
   total: 0,
 };
 export const cartSlice = createSlice({
@@ -76,8 +77,8 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-          console.log("hello1",{total:state.total});
-          
+          console.log("hello1", { total: state.total });
+
           state.total = diffIndays * (bfPrice + lcPrice + dnrPrice);
         }
         if (
@@ -85,7 +86,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello2", { total: state.total });
+          console.log("hello2", { total: state.total });
           state.total = diffIndays * (lcPrice + dnrPrice);
         }
         if (
@@ -93,7 +94,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello3", { total: state.total });
+          console.log("hello3", { total: state.total });
           state.total = diffIndays * (bfPrice + dnrPrice);
         }
         if (
@@ -101,7 +102,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello4", { total: state.total });
+          console.log("hello4", { total: state.total });
           state.total = diffIndays * (Number(bfPrice) + Number(lcPrice));
         }
         if (
@@ -109,7 +110,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello5", { total: state.total });
+          console.log("hello5", { total: state.total });
           state.total = diffIndays * Number(bfPrice);
         }
         if (
@@ -117,7 +118,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello6", { total: state.total });
+          console.log("hello6", { total: state.total });
           state.total = diffIndays * lcPrice;
         }
         if (
@@ -125,7 +126,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello7", { total: state.total });
+          console.log("hello7", { total: state.total });
           state.total = diffIndays * dnrPrice;
         }
       }
@@ -139,8 +140,8 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-          console.log("hello1",{total:state.total});
-          
+          console.log("hello1", { total: state.total });
+
           state.total = diffIndays * (bfPrice + lcPrice + dnrPrice);
         }
         if (
@@ -148,7 +149,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello2", { total: state.total });
+          console.log("hello2", { total: state.total });
           state.total = diffIndays * (lcPrice + dnrPrice);
         }
         if (
@@ -156,7 +157,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello3", { total: state.total });
+          console.log("hello3", { total: state.total });
           state.total = diffIndays * (bfPrice + dnrPrice);
         }
         if (
@@ -164,7 +165,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello4", { total: state.total });
+          console.log("hello4", { total: state.total });
           state.total = diffIndays * (Number(bfPrice) + Number(lcPrice));
         }
         if (
@@ -172,7 +173,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello5", { total: state.total });
+          console.log("hello5", { total: state.total });
           state.total = diffIndays * Number(bfPrice);
         }
         if (
@@ -180,7 +181,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello6", { total: state.total });
+          console.log("hello6", { total: state.total });
           state.total = diffIndays * lcPrice;
         }
         if (
@@ -188,7 +189,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello7", { total: state.total });
+          console.log("hello7", { total: state.total });
           state.total = diffIndays * dnrPrice;
         }
       }
@@ -202,8 +203,8 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-          console.log("hello1",{total:state.total});
-          
+          console.log("hello1", { total: state.total });
+
           state.total = diffIndays * (bfPrice + lcPrice + dnrPrice);
         }
         if (
@@ -211,7 +212,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello2", { total: state.total });
+          console.log("hello2", { total: state.total });
           state.total = diffIndays * (lcPrice + dnrPrice);
         }
         if (
@@ -219,7 +220,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello3", { total: state.total });
+          console.log("hello3", { total: state.total });
           state.total = diffIndays * (bfPrice + dnrPrice);
         }
         if (
@@ -227,7 +228,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello4", { total: state.total });
+          console.log("hello4", { total: state.total });
           state.total = diffIndays * (Number(bfPrice) + Number(lcPrice));
         }
         if (
@@ -235,7 +236,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello5", { total: state.total });
+          console.log("hello5", { total: state.total });
           state.total = diffIndays * Number(bfPrice);
         }
         if (
@@ -243,7 +244,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello6", { total: state.total });
+          console.log("hello6", { total: state.total });
           state.total = diffIndays * lcPrice;
         }
         if (
@@ -251,7 +252,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello7", { total: state.total });
+          console.log("hello7", { total: state.total });
           state.total = diffIndays * dnrPrice;
         }
       }
@@ -265,8 +266,8 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-          console.log("hello1",{total:state.total});
-          
+          console.log("hello1", { total: state.total });
+
           state.total = diffIndays * (bfPrice + lcPrice + dnrPrice);
         }
         if (
@@ -274,7 +275,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello2", { total: state.total });
+          console.log("hello2", { total: state.total });
           state.total = diffIndays * (lcPrice + dnrPrice);
         }
         if (
@@ -282,7 +283,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello3", { total: state.total });
+          console.log("hello3", { total: state.total });
           state.total = diffIndays * (bfPrice + dnrPrice);
         }
         if (
@@ -290,7 +291,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello4", { total: state.total });
+          console.log("hello4", { total: state.total });
           state.total = diffIndays * (Number(bfPrice) + Number(lcPrice));
         }
         if (
@@ -298,7 +299,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello5", { total: state.total });
+          console.log("hello5", { total: state.total });
           state.total = diffIndays * Number(bfPrice);
         }
         if (
@@ -306,7 +307,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello6", { total: state.total });
+          console.log("hello6", { total: state.total });
           state.total = diffIndays * lcPrice;
         }
         if (
@@ -314,7 +315,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello7", { total: state.total });
+          console.log("hello7", { total: state.total });
           state.total = diffIndays * dnrPrice;
         }
       }
@@ -328,8 +329,8 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-          console.log("hello1",{total:state.total});
-          
+          console.log("hello1", { total: state.total });
+
           state.total = diffIndays * (bfPrice + lcPrice + dnrPrice);
         }
         if (
@@ -337,7 +338,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello2", { total: state.total });
+          console.log("hello2", { total: state.total });
           state.total = diffIndays * (lcPrice + dnrPrice);
         }
         if (
@@ -345,7 +346,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello3", { total: state.total });
+          console.log("hello3", { total: state.total });
           state.total = diffIndays * (bfPrice + dnrPrice);
         }
         if (
@@ -353,7 +354,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello4", { total: state.total });
+          console.log("hello4", { total: state.total });
           state.total = diffIndays * (Number(bfPrice) + Number(lcPrice));
         }
         if (
@@ -361,7 +362,7 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello5", { total: state.total });
+          console.log("hello5", { total: state.total });
           state.total = diffIndays * Number(bfPrice);
         }
         if (
@@ -369,7 +370,7 @@ export const cartSlice = createSlice({
           lunchItems?.length > 0 &&
           !dinnerItems?.length > 0
         ) {
-           console.log("hello6", { total: state.total });
+          console.log("hello6", { total: state.total });
           state.total = diffIndays * lcPrice;
         }
         if (
@@ -377,13 +378,21 @@ export const cartSlice = createSlice({
           !lunchItems?.length > 0 &&
           dinnerItems?.length > 0
         ) {
-           console.log("hello7", { total: state.total });
+          console.log("hello7", { total: state.total });
           state.total = diffIndays * dnrPrice;
         }
       }
-     
     },
-    decreaseCartQuantity: (state, action) => {},
+    setDelivery: (state, action) => {
+       const { del } = action.payload;
+      state.delivery = del
+    },
+    decreaseCartQuantity: (state, action) => {
+      state.order = [];
+      state.dateRange = null;
+      state.total = null;
+      state.delivery = []
+    },
     removeFromCart: (state) => {},
   },
 });
@@ -393,6 +402,7 @@ export const {
   decreaseCartQuantity,
   removeFromCart,
   setDateRange,
+  setDelivery,
   setTotalAmount,
   setTime,
 } = cartSlice.actions;
@@ -400,5 +410,6 @@ export const {
 export const currentDateRange = (state) => state.cart.dateRange;
 export const currentCartItems = (state) => state.cart.order;
 export const currentTotal = (state) => state.cart.total;
+export const selectedDeliDetes = (state) => state.cart.delivery;
 
 export default cartSlice.reducer;

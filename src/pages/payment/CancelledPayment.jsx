@@ -1,8 +1,21 @@
 import { Button, Result } from "antd";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { decreaseCartQuantity } from "../../redux/slices/cart/cartSlice";
 
 export const CancelledPayment = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let mount = true;
+    if (mount) {
+      dispatch(decreaseCartQuantity());
+    }
+    return () => {
+      mount = false;
+    };
+  }, []);
   return (
     <Result
       status="warning"
@@ -10,7 +23,7 @@ export const CancelledPayment = () => {
       extra={
         <Link to="/">
           <Button type="primary" key="console">
-            Go Console
+            Go Home
           </Button>
         </Link>
       }

@@ -20,6 +20,9 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    deleteItems: builder.mutation({
+      query: (id) => `/items/delete/${id}`,
+    }),
   }),
 });
 

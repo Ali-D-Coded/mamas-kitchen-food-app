@@ -103,7 +103,11 @@ navigate("create-items");
      }));
    }
 
-   console.log(dataGood);
+  console.log(dataGood);
+  
+  function handleDeleteItem(value) {
+    console.log(value);
+  }
   //  const [selectionType, setSelectionType] = useState("checkbox");
   return (
     <div className="pt-10 px-5">
@@ -152,7 +156,7 @@ navigate("create-items");
            <Button type="primary" onClick={() => showEditDrawer(record)}>
              Edit
            </Button>
-           <Button type="dashed">Delete</Button>
+           <Button type="primary" onClick={() => handleDeleteItem(record)} danger>Delete</Button>
          </div>
        )} />
                 </Table>

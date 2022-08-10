@@ -1,8 +1,44 @@
 import { Button, Result } from "antd";
-import {Link} from "react-router-dom"
-import React from "react";
+import {Link, useNavigate} from "react-router-dom"
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { currentCartItems, currentDateRange, currentTotal, decreaseCartQuantity, selectedDeliDetes } from "../../redux/slices/cart/cartSlice";
+import APIClient from "../../utils/axios";
+import { selectCurrentUser } from "../../redux/slices/auth/authSlice";
 
 const SuccessPayment = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const user = useSelector(selectCurrentUser);
+  const cartItems = useSelector(currentCartItems);
+  const dateRange = useSelector(currentDateRange);
+  const total = useSelector(currentTotal);
+  const deliveryDetes = useSelector(selectedDeliDetes);
+    useEffect(() => {
+      let mount = true;
+      const controller = new AbortController()
+// console.log("hrllo");
+      if (mount) {
+        if (cartItems.length >= 1) {
+          APIClient.post("/orders/create", {
+            cartItems: cartItems,
+            userId: user.id,
+            total: total,
+            dateRange,
+            deliveryDetes,
+          });
+        }
+        dispatch(decreaseCartQuantity());
+        // window.location.reload();
+        setTimeout(() => {
+          navigate('/')
+        },5000)
+      }
+      return () => {
+        mount = false;
+        controller.abort()
+      };
+    }, []);
     return (
       <Result
         status="success"
