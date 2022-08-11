@@ -9,12 +9,15 @@ import {
   Popconfirm,
   message,
 } from "antd";
+import { differenceInCalendarDays, format } from "date-fns";
 import React, { useState } from "react";
 import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "../../../redux/slices/items/categoriesApiSlice";
-import EditCategory from "./EditCategory";
+import { useGetAllOrdersQuery } from "../../../redux/slices/orders/ordersApiSlice";
+import { formatCurrency } from "../../../utils/formatCurrency";
+
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -31,7 +34,7 @@ const rowSelection = {
   }),
 };
 
-const CategoryTable = () => {
+const OrdersTable = () => {
   const [
     deleteCat,
     { isSuccess: dltSucc, isError: dltErr, isLoading: dltLoad },
@@ -39,12 +42,12 @@ const CategoryTable = () => {
   const [visible, setVisible] = useState(false);
   const [editItem, setEditItem] = useState();
   const {
-    data: CateData,
+    data: ordersData,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetCategoriesQuery();
+  } = useGetAllOrdersQuery();
 
   const showDrawer = (value) => {
     setEditItem(value);
@@ -55,14 +58,24 @@ const CategoryTable = () => {
     setVisible(false);
   };
 
-  if (isSuccess) {
-    var dataGood = CateData.map((it) => ({
+    if (isSuccess) {
+      console.log(ordersData);
+    var dataGood = ordersData.map((it) => ({
       key: it.id,
-      name: it.name,
+      user: it.user.name,
       items: it.items,
+      deliver: it.delivery,
+      from: it.from,
+        to: it.to,
+      totDays:   differenceInCalendarDays(
+          new Date(it.to),
+          new Date(it.from)
+        ),
+      total_amt: it.total_amt,
       actions: it,
     }));
-  }
+    }
+    console.log(dataGood);
   // const { Search } = Input;
   // const onSearch = (value) => console.log(value);
 
@@ -85,47 +98,78 @@ const CategoryTable = () => {
   }
 
   const columns = [
-    { dataIndex: "name", title: "Name" },
+    { dataIndex: "user", title: "User" },
     {
       dataIndex: "items",
       title: "Items",
-      render: (record) => record.map((it) => <Tag>{it.name}</Tag>),
+      render: (record) => record?.map((it) => <Tag>{it.item?.name}</Tag>),
     },
     {
-      dataIndex: "actions",
-      title: "Actions",
-
-      render: (record) => {
-        return (
-          <div className="flex gap-3">
-            <Button onClick={() => showDrawer(record)} type="primary">
-              Edit
-            </Button>
-            <Popconfirm
-              onConfirm={() => deleteCategory(record)}
-              okButtonProps={{ loading: isLoading }}
-            >
-              <Button type="primary" danger>
-                Delete
-              </Button>
-            </Popconfirm>
-          </div>
-        );
-      },
+      dataIndex: "deliver",
+      title: "Delivery Details",
+      render: (record) =>
+        record?.map((it) => (
+          <pre>
+            <strong>{it.day}</strong>&nbsp;: <Tag>{it.del}</Tag>
+          </pre>
+        )),
     },
+    {
+      dataIndex: "from",
+      title: "From",
+      render: (record) => <Tag>{format(new Date(record), "dd/MM/yyyy")}</Tag>,
+    },
+    {
+      dataIndex: "to",
+      title: "To",
+      render: (record) => <Tag>{format(new Date(record), "dd/MM/yyyy")}</Tag>,
+    },
+    {
+      dataIndex: "totDays",
+      title: "Total Days",
+
+      render: (record) => <pre>{record}&nbsp;days</pre>,
+    },
+    {
+      dataIndex: "total_amt",
+      title: "Total Amount",
+      render: (record) => <pre>{formatCurrency(record)}</pre>,
+    },
+    // {
+    //   dataIndex: "actions",
+    //   title: "Actions",
+
+    //   render: (record) => {
+    //     return (
+    //       <div className="flex gap-3">
+    //         <Button onClick={() => showDrawer(record)} type="primary">
+    //           Edit
+    //         </Button>
+    //         <Popconfirm
+    //           onConfirm={() => deleteCategory(record)}
+    //           okButtonProps={{ loading: isLoading }}
+    //         >
+    //           <Button type="primary" danger>
+    //             Delete
+    //           </Button>
+    //         </Popconfirm>
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   let content;
   content = (
     <div>
       <Divider />
-      <div className="px-5">
+      <div className="">
         <Table
           columns={columns}
           dataSource={dataGood}
           scroll={{
             y: 400,
-            x: 600,
+            x: "auto",
           }}
         />
       </div>
@@ -143,7 +187,7 @@ const CategoryTable = () => {
           </Space>
         }
       >
-        <EditCategory editItem={editItem} close={onClose} />
+        {/* <EditCategory editItem={editItem} close={onClose} /> */}
       </Drawer>
     </div>
   );
@@ -151,4 +195,4 @@ const CategoryTable = () => {
   return content;
 };
 
-export default CategoryTable;
+export default OrdersTable;

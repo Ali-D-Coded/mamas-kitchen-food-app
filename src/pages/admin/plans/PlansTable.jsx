@@ -14,7 +14,9 @@ import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "../../../redux/slices/items/categoriesApiSlice";
-import EditCategory from "./EditCategory";
+import { useGetAllPlansAllQuery, useGetAllPlansQuery } from "../../../redux/slices/plans/plansApiSlice";
+import { formatCurrency } from "../../../utils/formatCurrency";
+
 
 const rowSelection = {
   onChange: (selectedRowKeys, selectedRows) => {
@@ -31,7 +33,7 @@ const rowSelection = {
   }),
 };
 
-const CategoryTable = () => {
+const PlansTable = () => {
   const [
     deleteCat,
     { isSuccess: dltSucc, isError: dltErr, isLoading: dltLoad },
@@ -39,12 +41,12 @@ const CategoryTable = () => {
   const [visible, setVisible] = useState(false);
   const [editItem, setEditItem] = useState();
   const {
-    data: CateData,
+    data: PlansData,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetCategoriesQuery();
+  } = useGetAllPlansAllQuery();
 
   const showDrawer = (value) => {
     setEditItem(value);
@@ -55,13 +57,25 @@ const CategoryTable = () => {
     setVisible(false);
   };
 
-  if (isSuccess) {
-    var dataGood = CateData.map((it) => ({
-      key: it.id,
-      name: it.name,
-      items: it.items,
-      actions: it,
-    }));
+    
+    if (isSuccess) {
+      console.log(PlansData);
+    // var dataGood = PlansData.map((it) => ({
+    //   key: it.id,
+    //   name: it.name,
+    //   planCode: it.planCode,
+    //   days: it.days,
+    //   price: it.price,
+    //   actions: it,
+    // }));
+        var dataGood = PlansData.map((it) => ({
+          key: it.id,
+          planCode: it.planName,
+          time: it.plan.name,
+          days: it.days,
+          price: it.price,
+          actions: it,
+        }));
   }
   // const { Search } = Input;
   // const onSearch = (value) => console.log(value);
@@ -71,7 +85,7 @@ const CategoryTable = () => {
   async function deleteCategory(values) {
     console.log(values);
     try {
-      await deleteCat(values.id).unwrap();
+    //   await deleteCat(values.id).unwrap();
       if (dltSucc) {
         message.success("Category deleted successfully");
         setTimeout(() => {
@@ -85,11 +99,14 @@ const CategoryTable = () => {
   }
 
   const columns = [
-    { dataIndex: "name", title: "Name" },
+    // { dataIndex: "name", title: "Name" },
+    { dataIndex: "planCode", title: "Plan Code" },
+    { dataIndex: "time", title: "Time" },
+    { dataIndex: "days", title: "Days", className:"w-20"},
     {
-      dataIndex: "items",
-      title: "Items",
-      render: (record) => record.map((it) => <Tag>{it.name}</Tag>),
+      dataIndex: "price",
+      title: "Price",
+      render: (record) => <>{formatCurrency(record)}</>,
     },
     {
       dataIndex: "actions",
@@ -125,12 +142,12 @@ const CategoryTable = () => {
           dataSource={dataGood}
           scroll={{
             y: 400,
-            x: 600,
+            x: "auto",
           }}
         />
       </div>
       <Drawer
-        title="Edit Category"
+        title="Edit Plan"
         width={420}
         onClose={onClose}
         visible={visible}
@@ -143,7 +160,7 @@ const CategoryTable = () => {
           </Space>
         }
       >
-        <EditCategory editItem={editItem} close={onClose} />
+        {/* <EditCategory editItem={editItem} close={onClose} /> */}
       </Drawer>
     </div>
   );
@@ -151,4 +168,4 @@ const CategoryTable = () => {
   return content;
 };
 
-export default CategoryTable;
+export default PlansTable;

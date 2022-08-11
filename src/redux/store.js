@@ -19,6 +19,8 @@ import { authApiSlice } from "./slices/auth/authApiSlice";
 import { signUpAuthApiSlice } from "./slices/auth/signUpAuthApiSlice";
 import { itemsApiSlice } from "./slices/items/itemsApiSlice";
 import { categoriesApiSlice } from "./slices/items/categoriesApiSlice";
+import { ordersApiSlice } from "./slices/orders/ordersApiSlice";
+import { plansApiSlice, useGetAllPlansAllQuery } from "./slices/plans/plansApiSlice";
 
 const rootReducer = combineReducers({
   [apiSlice.reducerPath]: apiSlice.reducer,
@@ -37,6 +39,8 @@ const persistConfig = {
     signUpAuthApiSlice.reducerPath,
     itemsApiSlice.reducerPath,
     categoriesApiSlice.reducerPath,
+    ordersApiSlice.reducerPath,
+    plansApiSlice.reducerPath
   ],
 };
 

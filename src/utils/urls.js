@@ -12,7 +12,7 @@ export const fromImageToUrl = (image, path) => {
   if (image.url?.indexOf("/") === 0) {
     return `${API_URL}${path}${image.url}`;
   }
-  return image.url && `${API_URL}${path}${image.url}`;
+  return image.url && `${API_URL}/${path}/${image.url}`;
 };
 
 // export const fromImageToUrl = (image) => {

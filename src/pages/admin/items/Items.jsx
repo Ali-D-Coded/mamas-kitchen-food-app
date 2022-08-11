@@ -1,113 +1,117 @@
 // import { Button, Typography } from "@mui/material";
-import { Button, Input, PageHeader, Tabs, Typography,Drawer, Space,Table } from "antd";
+import {
+  Button,
+  Input,
+  PageHeader,
+  Tabs,
+  Typography,
+  Drawer,
+  Space,
+  Table,
+  message,
+  Popconfirm,
+  Avatar,
+} from "antd";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ItemsTable from "../../../components/ItemsTable";
 import CreateItems from "./CreateItems";
 import EditItem from "./EditItem";
 import { useGetAllItemsQuery } from "../../../redux/slices/items/getAllItemsForAdmin";
+import { useDeleteItemsMutation } from "../../../redux/slices/items/itemsApiSlice";
+import { fromImageToUrl } from "../../../utils/urls";
 const { TabPane } = Tabs;
 const { Column } = Table;
 const Items = () => {
-  const navigate = useNavigate()
-  const [search, setSearch] = useState()
+  const navigate = useNavigate();
+  const [visiblePop, setVisiblePop] = useState(false);
+
+  const [search, setSearch] = useState();
   const [visible, setVisible] = useState(false);
-  const [editData,setEditData] = useState()
+  const [editData, setEditData] = useState();
   const [visibleEdit, setVisibleEdit] = useState(false);
   const { Title } = Typography;
   const goCreate = () => {
-navigate("create-items");
-  }
-   const showDrawer = () => {
+    navigate("create-items");
+  };
+  const showDrawer = () => {
     setVisible(true);
   };
   const showEditDrawer = (value) => {
-     console.log(value);
-     setVisibleEdit(true);
-     setEditData(value)
+    console.log(value);
+    setVisibleEdit(true);
+    setEditData(value);
   };
   const onClose = () => {
     setVisible(false);
   };
   const onCloseEdit = () => {
     setVisibleEdit(false);
-    window.location.reload()
+    window.location.reload();
   };
-    // const { Search } = Input;
-  const onSearch = (e) => setSearch(e.target.value)
-  
+  // const { Search } = Input;
+  const onSearch = (e) => setSearch(e.target.value);
+
   console.log("search:", search);
-   const columns = [
-     { dataIndex: "name", title: "Name" },
-     { dataIndex: "description", title: "Description" },
-     {
-       dataIndex: "category",
-       title: "Category",
-       render: (record) => <p>{record?.name}</p>,
-     },
-     {
-       dataIndex: "price",
-       title: "Price",
-     },
-     {
-       dataIndex: "food_type",
-       title: "Food Type",
-     },
-     {
-       dataIndex: "actions",
-       title: "Actions",
-       render: (record) => (
-         <div className="flex gap-3">
-           <Button type="primary" onClick={() => showEditDrawer(record)}>
-             Edit
-           </Button>
-           <Button type="dashed">Delete</Button>
-         </div>
-       ),
-     },
-   ];
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(
+        `selectedRowKeys: ${selectedRowKeys}`,
+        "selectedRows: ",
+        selectedRows
+      );
+    },
+    getCheckboxProps: (record) => ({
+      disabled: record.name === "Disabled User",
+      // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
 
-   const rowSelection = {
-     onChange: (selectedRowKeys, selectedRows) => {
-       console.log(
-         `selectedRowKeys: ${selectedRowKeys}`,
-         "selectedRows: ",
-         selectedRows
-       );
-     },
-     getCheckboxProps: (record) => ({
-       disabled: record.name === "Disabled User",
-       // Column configuration not to be checked
-       name: record.name,
-     }),
-   };
+  const {
+    data: itemData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetAllItemsQuery();
 
-   const {
-     data: itemData,
-     isLoading,
-     isSuccess,
-     isError,
-     error,
-   } = useGetAllItemsQuery();
-
-   if (isSuccess) {
-     var dataGood = itemData.map((it) => ({
-       key: it.id,
-       name: it.name,
-       category: it.category.name,
-       description: it.description,
-       price: it.price,
-       food_type: it.food_type,
-      action: it
-     }));
-   }
-
-  console.log(dataGood);
-  
-  function handleDeleteItem(value) {
-    console.log(value);
+  if (isSuccess) {
+    var dataGood = itemData.map((it) => ({
+      key: it.id,
+      name: it.name,
+      category: it.category.name,
+      description: it.description,
+      price: it.price,
+      food_type: it.food_type,
+      image:it.images[0],
+      action: it,
+    }));
   }
+
+  console.log(itemData);
+
+  const [
+    deleteItem,
+    { isError: dltErr, isSuccess: dltSucc, isLoading: dltLoading },
+  ] = useDeleteItemsMutation();
+
+  async function handleDeleteItem(value) {
+    console.log(value);
+
+    try {
+      await deleteItem(value.id).unwrap();
+      message.success("Item Deleted Successfully");
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      console.log(error);
+      message.error(error.message);
+    }
+  }
+
   //  const [selectionType, setSelectionType] = useState("checkbox");
   return (
     <div className="pt-10 px-5">
@@ -133,7 +137,7 @@ navigate("create-items");
           <Tabs>
             <TabPane key="1">
               {/* <ItemsTable editDrawer={(v) => showEditDrawer(v)} /> */}
-              <div className="px-5">
+              <div className="px-3">
                 <Table
                   loading={isLoading}
                   // rowSelection={{
@@ -144,21 +148,50 @@ navigate("create-items");
                   dataSource={dataGood}
                   scroll={{
                     y: 500,
-                    // x: 600,
+                    x: "auto",
                   }}
                 >
                   <Column dataIndex="name" title="Name" />
+                  <Column
+                    dataIndex="description"
+                    title="Description"
+                    render={(record) => <p className="break-words h-12 overflow-clip">{String(record)?.substring(0,50)}</p>}
+                  />
+                  <Column
+                    dataIndex="image"
+                    title="Image"
+                    render={(record) => (
+                      <Avatar src={fromImageToUrl(record, "items/images")} />
+                    )}
+                  />
                   <Column dataIndex="category" title="Category" />
                   <Column dataIndex="food_type" title="Food Type" />
                   <Column dataIndex="price" title="Price" />
-                  <Column dataIndex="action" title="Action" render={(record) => (
-         <div className="flex gap-3">
-           <Button type="primary" onClick={() => showEditDrawer(record)}>
-             Edit
-           </Button>
-           <Button type="primary" onClick={() => handleDeleteItem(record)} danger>Delete</Button>
-         </div>
-       )} />
+                  <Column
+                    dataIndex="action"
+                    title="Action"
+                    render={(record) => (
+                      <div className="flex gap-3">
+                        <Button
+                          type="primary"
+                          onClick={() => showEditDrawer(record)}
+                        >
+                          Edit
+                        </Button>
+                        <Popconfirm
+                          title="Title"
+                          onConfirm={() => handleDeleteItem(record)}
+                          // okButtonProps={{
+                          //   loading: dltLoading,
+                          // }
+                        >
+                          <Button type="primary" danger>
+                            Delete
+                          </Button>
+                        </Popconfirm>
+                      </div>
+                    )}
+                  />
                 </Table>
               </div>
             </TabPane>
@@ -191,7 +224,7 @@ navigate("create-items");
         }}
         extra={
           <Space>
-            <Button onClick={onCloseEdit} >Cancel</Button>
+            <Button onClick={onCloseEdit}>Cancel</Button>
           </Space>
         }
       >

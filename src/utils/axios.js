@@ -10,6 +10,7 @@ const APIClient = axios.create({
     Authorization: `Bearer ${jsCookie.get("token")}`,
   },
   withCredentials: true,
+  
 });
 
 export const APIClientPrivate = axios.create({

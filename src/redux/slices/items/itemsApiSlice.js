@@ -21,9 +21,12 @@ export const itemsApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteItems: builder.mutation({
-      query: (id) => `/items/delete/${id}`,
+      query: (id) => ({
+        url: `/items/delete/${id}`,
+        method:"DELETE"
+      }),
     }),
   }),
 });
 
-export const { useGetItemsQuery,useGetItemsByIdQuery,useCreateItemsMutation } = itemsApiSlice;
+export const { useGetItemsQuery,useGetItemsByIdQuery,useCreateItemsMutation,useDeleteItemsMutation } = itemsApiSlice;
