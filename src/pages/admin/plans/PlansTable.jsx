@@ -14,8 +14,9 @@ import {
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
 } from "../../../redux/slices/items/categoriesApiSlice";
-import { useGetAllPlansAllQuery, useGetAllPlansQuery } from "../../../redux/slices/plans/plansApiSlice";
+import { useGetAllPlansAllQuery } from "../../../redux/slices/plans/plansApiSlice";
 import { formatCurrency } from "../../../utils/formatCurrency";
+import { EditPlan } from "./EditPlan";
 
 
 const rowSelection = {
@@ -160,7 +161,7 @@ const PlansTable = () => {
           </Space>
         }
       >
-        {/* <EditCategory editItem={editItem} close={onClose} /> */}
+        <EditPlan editItem={editItem} close={onClose} />
       </Drawer>
     </div>
   );

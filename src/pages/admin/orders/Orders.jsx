@@ -42,9 +42,7 @@ const Orders = () => {
             onChange={(e) => onSearch(e)}
             style={{ width: 200, height: 30 }}
           />,
-          <Button key="1" type="primary" onClick={showDrawer}>
-            Create Categories
-          </Button>,
+       
         ]}
         footer={
           <Tabs>

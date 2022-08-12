@@ -11,6 +11,7 @@ import {
 // import CategoryTable from "./CategoryTable";
 import { PlusOutlined } from "@ant-design/icons";
 import PlansTable from "./PlansTable";
+import { CreatePlan } from "./CreatePlan";
 // import CreateCategory from "./CreateCategory";
 
 const { Title } = Typography;
@@ -43,7 +44,7 @@ const Plans = () => {
             style={{ width: 200, height: 30 }}
           />,
           <Button key="1" type="primary" onClick={showDrawer}>
-            Create Categories
+            Create Plans
           </Button>,
         ]}
         footer={
@@ -57,7 +58,7 @@ const Plans = () => {
 
       <Drawer
         title="Create a new Plan"
-        width={420}
+        width={520}
         onClose={onClose}
         visible={visible}
         bodyStyle={{
@@ -69,7 +70,7 @@ const Plans = () => {
           </Space>
         }
       >
-        {/* <CreateCategory /> */}
+        <CreatePlan />
       </Drawer>
     </div>
   );

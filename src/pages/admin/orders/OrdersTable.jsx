@@ -165,6 +165,7 @@ const OrdersTable = () => {
       <Divider />
       <div className="">
         <Table
+          bordered
           columns={columns}
           dataSource={dataGood}
           scroll={{

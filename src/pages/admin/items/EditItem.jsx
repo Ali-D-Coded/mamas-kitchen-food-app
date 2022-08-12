@@ -37,13 +37,14 @@ const EditItem = ({ editData }) => {
 
   async function onFinish(values) {
     const data = new FormData();
-    data.append("file", values.file[0]?.originFileObj);
+    
+    values.file && data.append("file", values.file[0]?.originFileObj);
     data.append("name", values.name);
     data.append("price", values.price);
     data.append("description", values.description);
     data.append("category_id", values.category);
     data.append("food_type", values.food_type);
-    data.append("imgId", editData.images[0]?.id);
+     values.file.length > 0 && data.append("imgId", editData.images[0]?.id);
     console.log(values, editData.id, editData.images[0]?.id);
 
     // return 

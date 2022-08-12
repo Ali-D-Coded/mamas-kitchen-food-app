@@ -1,4 +1,4 @@
-export const API_URL = "http://192.168.18.6:3333";
+export const API_URL = "http://192.168.18.6:1234";
 
 /**
  * Given an image return the url

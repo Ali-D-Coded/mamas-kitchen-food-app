@@ -5,6 +5,13 @@ export const plansApiSlice = apiSlice.injectEndpoints({
     getAllPlansAll: builder.query({
       query: () => "/plans/all",
     }),
+    createPlan: builder.mutation({
+      query: (data) => ({
+        url: "/plans/create",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
-export const { useGetAllPlansQuery,useGetAllPlansAllQuery } = plansApiSlice;
+export const { useCreatePlanMutation,useGetAllPlansAllQuery } = plansApiSlice;
