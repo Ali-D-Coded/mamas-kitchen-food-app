@@ -68,9 +68,9 @@ export const cartSlice = createSlice({
       console.log({ breakFastItems, lunchItems, dinnerItems });
       console.log("====================================");
       if (diffIndays > 7) {
-        const bfPrice = state.breakfast.find((it) => it.days == "7").price;
-        const lcPrice = state.lunch.find((it) => it.days == "7").price;
-        const dnrPrice = state.dinner.find((it) => it.days == "7").price;
+        const bfPrice = Number(state.breakfast.find((it) => it.days == "7").price);
+        const lcPrice = Number(state.lunch.find((it) => it.days == "7").price);
+        const dnrPrice = Number(state.dinner.find((it) => it.days == "7").price);
         console.log({ bfPrice, lcPrice, dnrPrice });
         if (
           breakFastItems?.length > 0 &&
@@ -131,9 +131,9 @@ export const cartSlice = createSlice({
         }
       }
       if (diffIndays > 6) {
-        const bfPrice = state.breakfast.find((it) => it.days == "6").price;
-        const lcPrice = state.lunch.find((it) => it.days == "6").price;
-        const dnrPrice = state.dinner.find((it) => it.days == "6").price;
+        const bfPrice = Number(state.breakfast.find((it) => it.days == "6").price);
+        const lcPrice = Number(state.lunch.find((it) => it.days == "6").price);
+        const dnrPrice = Number(state.dinner.find((it) => it.days == "6").price);
         console.log({ bfPrice, lcPrice, dnrPrice });
         if (
           breakFastItems?.length > 0 &&
@@ -194,9 +194,9 @@ export const cartSlice = createSlice({
         }
       }
       if (diffIndays > 5) {
-        const bfPrice = state.breakfast.find((it) => it.days == "5").price;
-        const lcPrice = state.lunch.find((it) => it.days == "5").price;
-        const dnrPrice = state.dinner.find((it) => it.days == "5").price;
+        const bfPrice =Number(state.breakfast.find((it) => it.days == "5").price);
+        const lcPrice = Number(state.lunch.find((it) => it.days == "5").price);
+        const dnrPrice = Number(state.dinner.find((it) => it.days == "5").price);
         console.log({ bfPrice, lcPrice, dnrPrice });
         if (
           breakFastItems?.length > 0 &&
@@ -257,9 +257,9 @@ export const cartSlice = createSlice({
         }
       }
       if (diffIndays > 4) {
-        const bfPrice = state.breakfast.find((it) => it.days == "4").price;
-        const lcPrice = state.lunch.find((it) => it.days == "4").price;
-        const dnrPrice = state.dinner.find((it) => it.days == "4").price;
+        const bfPrice = Number(state.breakfast.find((it) => it.days == "4").price);
+        const lcPrice = Number(state.lunch.find((it) => it.days == "4").price);
+        const dnrPrice = Number(state.dinner.find((it) => it.days == "4").price);
         console.log({ bfPrice, lcPrice, dnrPrice });
         if (
           breakFastItems?.length > 0 &&
@@ -320,9 +320,9 @@ export const cartSlice = createSlice({
         }
       }
       if (diffIndays > 3) {
-        const bfPrice = state.breakfast.find((it) => it.days == "3").price;
-        const lcPrice = state.lunch.find((it) => it.days == "3").price;
-        const dnrPrice = state.dinner.find((it) => it.days == "3").price;
+        const bfPrice = Number(state.breakfast.find((it) => it.days == "3").price);
+        const lcPrice = Number(state.lunch.find((it) => it.days == "3").price);
+        const dnrPrice = Number(state.dinner.find((it) => it.days == "3").price);
         console.log({ bfPrice, lcPrice, dnrPrice });
         if (
           breakFastItems?.length > 0 &&
