@@ -44,7 +44,7 @@ const AdminAuth = () => {
         })
       );
 
-      // jsCookie.set("token", userData.token);
+      jsCookie.set("token", userData.token);
       navigate("/admin/dashboard");
     } catch (error) {
       if (!error?.response) {

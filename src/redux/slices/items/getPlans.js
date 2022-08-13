@@ -3,8 +3,8 @@ import { apiSlice } from "../../api/apiSlice";
 export const getAllPlans = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAllPlans: builder.query({
-      query: () => "/plans",
-    //   keepUnusedDataFor: 5,
+      query: () => "/plans/times",
+      //   keepUnusedDataFor: 5,
     }),
   }),
 });

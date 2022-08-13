@@ -56,6 +56,7 @@ const PlansTable = () => {
   const onSearch = (e) => setSearch(e.target.value);
   const onClose = () => {
     setVisible(false);
+    window.location.reload()
   };
 
     
@@ -119,14 +120,14 @@ const PlansTable = () => {
             <Button onClick={() => showDrawer(record)} type="primary">
               Edit
             </Button>
-            <Popconfirm
+            {/* <Popconfirm
               onConfirm={() => deleteCategory(record)}
               okButtonProps={{ loading: isLoading }}
             >
               <Button type="primary" danger>
                 Delete
               </Button>
-            </Popconfirm>
+            </Popconfirm> */}
           </div>
         );
       },

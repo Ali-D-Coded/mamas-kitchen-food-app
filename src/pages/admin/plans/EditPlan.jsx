@@ -1,6 +1,10 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Select, Space } from "antd";
-import { useCreatePlanMutation } from "../../../redux/slices/plans/plansApiSlice";
+import { Button, Col, Form, Input, message, Row, Select, Space } from "antd";
+import {
+  useCreatePlanMutation,
+  useGetAllPlanTimesQuery,
+  useUpdatePlanMutation,
+} from "../../../redux/slices/plans/plansApiSlice";
 
 const { Option } = Select;
 const times = [
@@ -23,23 +27,39 @@ const sights = {
   DINNER: ["DR7DPLAN", "DR6DPLAN", "DR5DPLAN", "DR4DPLAN", "DR3DPLAN"],
 };
 
-export const EditPlan = () => {
+export const EditPlan = ({ editItem, close }) => {
   const [form] = Form.useForm();
 
-  const [createPlan, { isSuccess, isLoading, isError }] =
-    useCreatePlanMutation();
+  console.log({ editItem });
+
+  const [updatePlan, { isSuccess, isLoading, isError }] =
+    useUpdatePlanMutation();
+  const { data: TimesDt } = useGetAllPlanTimesQuery();
 
   const onFinish = async (values) => {
     console.log("Received values of form:", values);
-    // try {
-    //   await createPlan({
-    //     planTypeName: values.time,
-    //     planDetes: values.sights,
-    //   }).unwrap();
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    const data = {
+      planDetesId: editItem.id,
+      days: values.days,
+      plan_code: values.plan_code,
+      price: values.price,
+      planId: values.time,
+    };
+    try {
+      await updatePlan(data).unwrap();
+    } catch (error) {
+      console.log(error);
+    }
   };
+  if (isLoading) {
+    message.loading("Loading");
+  }
+  if (isSuccess) {
+    message.success("Plan Updated SuccessFully");
+    close();
+    window.location.reload();
+  }
+  if (isError) message.error("Something went wrong");
 
   const handleChange = () => {
     form.setFieldsValue({
@@ -49,101 +69,62 @@ export const EditPlan = () => {
   return (
     <div>
       <Form
-        form={form}
-        name="dynamic_form_nest_item"
         onFinish={onFinish}
-        autoComplete="off"
-        
+        layout="vertical"
+        initialValues={{
+          plan_code: editItem.planName,
+          time: editItem.plan.id,
+          days: editItem.days,
+          price: Number(editItem.price),
+        }}
       >
-        <Form.Item
-          name="time"
-          label="Time"
-          rules={[
-            {
-              required: true,
-              message: "Missing time",
-            },
-          ]}
-        >
-          <Select options={times} onChange={handleChange} />
-        </Form.Item>
-        <Form.List name="sights">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map((field) => (
-                <Space key={field.key} align="baseline">
-                  <Form.Item
-                    noStyle
-                    shouldUpdate={(prevValues, curValues) =>
-                      prevValues.time !== curValues.time ||
-                      prevValues.sights !== curValues.sights
-                    }
-                  >
-                    {() => (
-                      <Form.Item
-                        {...field}
-                        label="Sight"
-                        name={[field.name, "sight"]}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Missing sight",
-                          },
-                        ]}
-                      >
-                        <Select
-                          disabled={!form.getFieldValue("time")}
-                          style={{
-                            width: 130,
-                          }}
-                        >
-                          {(sights[form.getFieldValue("time")] || []).map(
-                            (item) => (
-                              <Option key={item} value={item}>
-                                {item}
-                              </Option>
-                            )
-                          )}
-                        </Select>
-                      </Form.Item>
-                    )}
-                  </Form.Item>
-                  <Form.Item
-                    {...field}
-                    label="Price"
-                    name={[field.name, "price"]}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Missing price",
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
-
-                  <MinusCircleOutlined onClick={() => remove(field.name)} />
-                </Space>
-              ))}
-
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Add sights
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
-        </Form.Item>
+        <Row>
+          <Col span={24}>
+            <Form.Item name="plan_code" label="Plan Code">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item
+              name="time"
+              label="Time"
+              rules={[{ type: "enum", enum: [1, 2, 3] }]}
+            >
+              <Select>
+                {TimesDt?.map((it) => (
+                  <Select.Option key={it.id} value={it.id}>
+                    {it.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item name="days" label="Days">
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item name="price" label="Price" rules={[{ type: "integer" }]}>
+              <Input />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col span={24}>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Col>
+        </Row>
       </Form>
     </div>
   );

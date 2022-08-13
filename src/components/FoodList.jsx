@@ -10,7 +10,7 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import * as lodesh from "lodash";
 import { motion, AnimatePresence } from "framer-motion";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { PlusCircleOutlined, SettingOutlined } from "@ant-design/icons";
 // import {
 //   selectAllItems,
 //   // getItemsState,
@@ -66,7 +66,6 @@ const defaultCheckedList = ["SUNDAY", "MONDAY", "TUESDAY"];
 const { RangePicker } = DatePicker;
 const dateFormat = "YYYY/MM/DD";
 const FoodList = () => {
-  
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const [indeterminate, setIndeterminate] = useState(true);
   const [checkAll, setCheckAll] = useState(false);
@@ -86,7 +85,7 @@ const FoodList = () => {
   const [selectedDays, setSelectedDays] = useState([]);
   const [selectedDelivery, setSelectedDelivery] = useState();
   const dt = useSelector(currentDateRange);
-const selectedItemData = useSelector(currentCartItems);
+  const selectedItemData = useSelector(currentCartItems);
 
   // console.log("selectedFoodType: ", selectedFoodType);
   const [refresh, setRefresh] = useState(false);
@@ -139,7 +138,7 @@ const selectedItemData = useSelector(currentCartItems);
     setSelectedCategories((prev) => {
       return {
         ...prev,
-        days: prev.days.filter(it => it !== value),
+        days: prev.days.filter((it) => it !== value),
       };
     });
 
@@ -157,15 +156,15 @@ const selectedItemData = useSelector(currentCartItems);
   const { data: PlansDt, isSuccess: plansSucces } = useGetAllPlansQuery();
 
   if (plansSucces) {
-// console.log(PlansDt);
+    console.log({PlansDt});
     var foodType = PlansDt;
-      dispatch(
-        setTime({
-          breakfast: PlansDt?.find((it) => it.name == "BREAKFAST").planDetails,
-          lunch: PlansDt?.find((it) => it.name == "LUNCH").planDetails,
-          dinner: PlansDt?.find((it) => it.name == "DINNER").planDetails,
-        })
-      );
+    dispatch(
+      setTime({
+        breakfast: PlansDt?.find((it) => it.name == "BREAKFAST").planDetails,
+        lunch: PlansDt?.find((it) => it.name == "LUNCH").planDetails,
+        dinner: PlansDt?.find((it) => it.name == "DINNER").planDetails,
+      })
+    );
   }
   function addItemtoCart(values) {
     setSelectedItems(values);
@@ -182,18 +181,18 @@ const selectedItemData = useSelector(currentCartItems);
   const onFinish = (values) => {
     console.log({ values, itm: selectedItems });
     const items = [];
-      if (allItems?.find((it) => it.item.id == selectedItems.id) == null) {
-        setAllitems((prev) => {
-          return [
-            ...prev,
-            {
-              days: values.days,
-              item: selectedItems,
-            },
-          ];
-        });
+    if (allItems?.find((it) => it.item.id == selectedItems.id) == null) {
+      setAllitems((prev) => {
+        return [
+          ...prev,
+          {
+            days: values.days,
+            item: selectedItems,
+          },
+        ];
+      });
     }
-    
+
     dispatch(
       increaseCartQuantity({
         days: values.days,
@@ -226,13 +225,8 @@ const selectedItemData = useSelector(currentCartItems);
     setExpandIconPosition(newExpandIconPosition);
   };
 
-  const genExtra = () => (
-    <SettingOutlined
-      onClick={(event) => {
-        // If you don't want click extra trigger collapse, you can prevent this:
-        event.stopPropagation();
-      }}
-    />
+  const genExtra = (value) => (
+    <div>{value}&nbsp;items</div>
   );
   const onChangeCollapse = (key) => {
     console.log(key);
@@ -245,6 +239,8 @@ const selectedItemData = useSelector(currentCartItems);
   // console.log('====================================');
   // console.log(selectedCategories);
   // console.log('====================================');
+
+
 
   let content;
   if (isLoading) {
@@ -309,7 +305,7 @@ const selectedItemData = useSelector(currentCartItems);
                 key={cat.id}
                 onChange={onChangeCollapse}
               >
-                <Collapse.Panel header={cat.name} key={cat.id}>
+                <Collapse.Panel header={cat.name} key={cat.id} extra={genExtra(cat.items.length)}>
                   {cat.items.map((it) => {
                     return (
                       <Form name="cart" onFinish={onFinish} ref={formRef}>
@@ -356,7 +352,7 @@ const selectedItemData = useSelector(currentCartItems);
                                 preview={false}
                                 src={`${fromImageToUrl(
                                   it?.images[0],
-                                  "/items/images/"
+                                  "items/images"
                                 )}`}
                               />
                             </div>

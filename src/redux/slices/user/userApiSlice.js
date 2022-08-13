@@ -16,10 +16,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: { ...data },
       }),
     }),
+    blockUser: builder.mutation({
+      query: (data) => ({
+        url: `/users/block/${data.id}`,
+        method: "PUT",
+        body: { ...data },
+      }),
+    }),
     deleteUser: builder.mutation({
-      query: (id) => ({ url: `/users/${id}`, method: "DELETE"}),
+      query: (id) => ({ url: `/users/${id}`, method: "DELETE" }),
     }),
   }),
 });
 
-export const { useGetAllUsersQuery, useGetUserMeQuery,useUpdateUserMutation,useDeleteUserMutation } = userApiSlice;
+export const {
+  useGetAllUsersQuery,
+  useGetUserMeQuery,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useBlockUserMutation
+} = userApiSlice;

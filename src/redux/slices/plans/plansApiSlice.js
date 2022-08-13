@@ -5,6 +5,9 @@ export const plansApiSlice = apiSlice.injectEndpoints({
     getAllPlansAll: builder.query({
       query: () => "/plans/all",
     }),
+    getAllPlanTimes: builder.query({
+      query: () => "/plans/times",
+    }),
     createPlan: builder.mutation({
       query: (data) => ({
         url: "/plans/create",
@@ -12,6 +15,13 @@ export const plansApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    updatePlan: builder.mutation({
+      query: (data) => ({
+        url: `/plans/update-plan-details/${data.planDetesId}`,
+        method: "PATCH",
+        body: data,
+      }),
+    }),
   }),
 });
-export const { useCreatePlanMutation,useGetAllPlansAllQuery } = plansApiSlice;
+export const { useCreatePlanMutation,useGetAllPlansAllQuery,useUpdatePlanMutation,useGetAllPlanTimesQuery } = plansApiSlice;
