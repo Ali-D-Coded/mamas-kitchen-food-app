@@ -6,7 +6,14 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
     getAllOrders: builder.query({
       query: () => "/orders/all",
     }),
+    updateOrders: builder.mutation({
+      query: (data) => ({
+        url: `/orders/update/${data.id}`,
+        method: "",
+        body: {...data}
+      })
+    })
   }),
 });
 
-export const {useGetAllOrdersQuery} = ordersApiSlice
+export const {useGetAllOrdersQuery,useUpdateOrdersMutation} = ordersApiSlice

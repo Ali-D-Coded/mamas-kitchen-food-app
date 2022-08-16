@@ -174,7 +174,7 @@ const Profile = () => {
               onOk={handleOkPlan}
               onCancel={handleCancelPlan}
             >
-              <EditPlan />
+              <EditPlan orders={data?.orders} />
             </Modal>
           </TabPane>
           <TabPane tab="History" key="3">

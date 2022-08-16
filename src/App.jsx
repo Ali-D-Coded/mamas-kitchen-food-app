@@ -23,6 +23,7 @@ import CreateItems from "./pages/admin/items/CreateItems";
 import Orders from "./pages/admin/orders/Orders";
 import SuccessPayment from "./pages/payment/SuccessPayment";
 import { CancelledPayment } from "./pages/payment/CancelledPayment";
+import { Shop } from "./pages/Home/Shop";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
           element={
             <Layout>
               <Home />
+             </Layout>
+          }
+        />
+        <Route
+          path="/shop"
+          element={
+            <Layout>
+              <Shop />
             </Layout>
           }
         />

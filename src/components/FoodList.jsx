@@ -106,6 +106,9 @@ const FoodList = () => {
     error,
   } = useGetItemsQuery(selectedFoodType?.name || "BREAKFAST");
 
+
+
+
   const { data: categoryData, isSuccess: catgorySucess } =
     useGetCategoriesQuery();
 
@@ -349,6 +352,8 @@ const FoodList = () => {
                             </div>
                             <div className="self-center my-2">
                               <Image
+                                width={80}
+                                height={60}
                                 preview={false}
                                 src={`${fromImageToUrl(
                                   it?.images[0],
