@@ -1,6 +1,6 @@
 import { Button, Col, Divider, Form, Input, Row, Upload } from "antd";
 import {UploadOutlined} from "@ant-design/icons"
-import React from "react";
+import React, { forwardRef, useImperativeHandle } from "react";
 
 const normFile = (e) => {
   console.log("Upload event:", e);
@@ -12,15 +12,31 @@ const normFile = (e) => {
   return e?.fileList;
 };
 
-export const EditProfile = ({ editData }) => {
-
-    const work = editData.addresses.find((it) => it.address_type == "WORK");
-    const home = editData.addresses.find((it) => it.address_type == "HOME");
+export const EditProfile = forwardRef(({ editData }, ref) => {
+  const [form] = Form.useForm();
+  const work = editData.addresses.find((it) => it.address_type == "WORK");
+  const home = editData.addresses.find((it) => it.address_type == "HOME");
     
-    console.log({editData,work,home});
+  console.log({ editData, work, home });
+  
+  useImperativeHandle(ref, () => ({
+    onReset() {
+      form.resetFields();
+    },
+    formSubmit() {
+      form.submit();
+    },
+  }));
+
+  function onFinish(values) {
+    console.log({values});
+  }
+
   return (
     <div>
       <Form
+        form={form}
+        onFinish={onFinish}
         layout="vertical"
         initialValues={{
           name: editData.name,
@@ -76,7 +92,7 @@ export const EditProfile = ({ editData }) => {
           </Row>
           <Row>
             <Col span={24}>
-              <Form.Item name="home" label="Hme">
+              <Form.Item name="home" label="Home">
                 <Input.TextArea />
               </Form.Item>
             </Col>
@@ -85,4 +101,4 @@ export const EditProfile = ({ editData }) => {
       </Form>
     </div>
   );
-};
+});

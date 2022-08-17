@@ -13,7 +13,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import mmaLogo from "../../assets/mamasLogo.png";
 import { MdKeyboardArrowLeft } from "react-icons/md";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   currentCartItems,
   removeFromCart,
@@ -27,6 +27,7 @@ const Payment = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [deliveyDay, setDeliveyDay] = useState([]);
   const form = Form.useFormInstance();
+  const dispatch = useDispatch();
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -39,9 +40,13 @@ const Payment = () => {
     setIsModalVisible(false);
   };
 
-  function removeFromCart(item) {
+  function removeItemFromCart(item) {
     console.log(item);
-    
+    dispatch(
+      removeFromCart({
+        item,
+      })
+    );
   }
 
   function handleDelivery(day, del) {
@@ -96,7 +101,7 @@ const Payment = () => {
           renderItem={(item) => (
             <List.Item
               actions={[
-                <Button onClick={() => removeFromCart(item)} danger>
+                <Button onClick={() => removeItemFromCart(item)} danger>
                   Remove
                 </Button>,
               ]}

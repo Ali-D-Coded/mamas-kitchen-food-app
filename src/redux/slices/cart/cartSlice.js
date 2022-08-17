@@ -393,7 +393,11 @@ export const cartSlice = createSlice({
       state.total = null;
       state.delivery = []
     },
-    removeFromCart: (state) => {},
+    removeFromCart: (state, action) => {
+      const { item } = action.payload
+      console.log({item,orders: state.order});
+      state.order.filter(it => it !== item)
+    },
   },
 });
 

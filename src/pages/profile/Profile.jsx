@@ -1,16 +1,18 @@
 import {
   Avatar,
+  Button,
   Card,
   Divider,
   Empty,
   Image,
   Input,
   Modal,
+  Table,
   Tabs,
   Tag,
   Tooltip,
 } from "antd";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserOutlined, SettingOutlined } from "@ant-design/icons";
 import { useGetUserMeQuery } from "../../redux/slices/user/userApiSlice";
@@ -26,9 +28,11 @@ import { EditProfile } from "./EditProfile";
 import { EditPlan } from "./EditPlan";
 
 const Profile = () => {
+  const editRef = useRef();
   const { data, isLoading, isSuccess } = useGetUserMeQuery();
   const [isModalVisibleProfile, setIsModalVisibleProfile] = useState(false);
   const [isModalVisiblePlan, setIsModalVisiblePlan] = useState(false);
+  const [isModalVisibleDel, setIsModalVisibleDel] = useState(false);
 
   const showModalPlan = () => {
     setIsModalVisiblePlan(true);
@@ -36,12 +40,21 @@ const Profile = () => {
   const showModalProfile = () => {
     setIsModalVisibleProfile(true);
   };
+  const showModalDel = () => {
+    setIsModalVisibleDel(true);
+  };
 
   const handleOkPlan = () => {
     setIsModalVisiblePlan(false);
   };
   const handleOkProfile = () => {
+    editRef.current.formSubmit();
     setIsModalVisibleProfile(false);
+
+  };
+  const handleOkDel = () => {
+    setIsModalVisibleDel(false);
+
   };
 
   const handleCancelPlan = () => {
@@ -50,6 +63,9 @@ const Profile = () => {
   const handleCancelProfile = () => {
     setIsModalVisibleProfile(false);
   };
+  const handleCancelDel = () => {
+    setIsModalVisibleDel(false);
+  };
   console.log(isSuccess && data);
 
   const dispatch = useDispatch();
@@ -57,6 +73,9 @@ const Profile = () => {
     dispatch(decreaseCartQuantity());
     dispatch(logOut());
   }
+
+  const deliveryDetes = data?.orders[0].delivery.map(it => it)
+
   return (
     <div className="flex flex-col  h-screen">
       <div className="bg-[#99353D] h-1/3 flex flex-col items-center justify-end relative">
@@ -90,7 +109,7 @@ const Profile = () => {
           <TabPane
             tab="Profile"
             key="1"
-            className="flex justify-center items-center"
+            className="flex flex-col gap-5 justify-center items-center"
           >
             <Card className="w-[80%] text-center relative">
               <div className="absolute top-5 right-5">
@@ -114,14 +133,50 @@ const Profile = () => {
                 }
               </p>
             </Card>
+            <Card
+              title="Delivery Info"
+              className="w-[80%] text-center relative"
+              // extra={<SettingOutlined onClick={showModalDel} />}
+            >
+              <Table dataSource={deliveryDetes}>
+                <Table.Column title="Day" align="center" dataIndex="day" />
+                <Table.Column title="Location" align="center" dataIndex="del" />
+              </Table>
+            </Card>
             <Modal
               centered
               title="Edit Profile"
               visible={isModalVisibleProfile}
               onOk={handleOkProfile}
               onCancel={handleCancelProfile}
+              footer={[
+                <Button key="submit" type="primary" onClick={handleOkProfile}>
+                  Submit
+                </Button>,
+                <Button key="back" onClick={handleCancelProfile}>
+                  Cancel
+                </Button>,
+              ]}
             >
-              <EditProfile editData={data} />
+              <EditProfile editData={data} ref={editRef} />
+            </Modal>
+            <Modal
+              centered
+              title="Edit Delivery Info"
+              visible={isModalVisibleDel}
+              onOk={handleOkDel}
+              onCancel={handleCancelDel}
+              footer={[
+                <Button key="submit" type="primary" onClick={handleOkDel}>
+                  Submit
+                </Button>,
+                <Button key="back" onClick={handleCancelDel}>
+                  Cancel
+                </Button>,
+              ]}
+            >
+              hey
+              {/* <EditProfile editData={data} ref={editRef} /> */}
             </Modal>
           </TabPane>
           <TabPane tab="Current Plan" key="2">
