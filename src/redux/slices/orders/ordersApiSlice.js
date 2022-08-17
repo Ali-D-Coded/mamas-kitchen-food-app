@@ -9,7 +9,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
     updateOrders: builder.mutation({
       query: (data) => ({
         url: `/orders/update/${data.id}`,
-        method: "",
+        method: "PUT",
         body: {...data}
       })
     })

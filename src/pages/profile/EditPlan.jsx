@@ -1,4 +1,15 @@
-import { Button, Col, Form, Image, Input, Modal, Row, Select, Tag } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Image,
+  Input,
+  message,
+  Modal,
+  Row,
+  Select,
+  Tag,
+} from "antd";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useGetAllItemsQuery } from "../../redux/slices/items/getAllItemsForAdmin";
 import { useGetItemsQuery } from "../../redux/slices/items/itemsApiSlice";
@@ -127,7 +138,8 @@ export const EditPlan = ({ orders }) => {
 
 export const EditForm = forwardRef(({ editItem, modal, orderId }, ref) => {
   const [form] = Form.useForm();
-  const [updateOrder, {isError,isLoading,isSuccess}] = useUpdateOrdersMutation();
+  const [updateOrder, { isError, isLoading, isSuccess }] =
+    useUpdateOrdersMutation();
   // console.log("====================================");
   // console.log({ editItem, orderId });
   // console.log("====================================");
@@ -162,10 +174,27 @@ export const EditForm = forwardRef(({ editItem, modal, orderId }, ref) => {
     },
   }));
 
-  const onFinish = (values) => {
-    console.log({ values, editItem });
+  const onFinish = async (newDays) => {
+    console.log({ newDays, editItem });
 
+
+    try {
+      const res = await updateOrder({
+        id: orderId,
+        newDays,
+        editItem,
+      }).unwrap();
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
   };
+  if (isLoading) message.loading("Loading");
+  if (isError) message.error("Something Went wrong");
+  if (isSuccess) {
+    message.success("Success");
+    window.location.reload();
+  }
 
   return (
     <Form
@@ -177,7 +206,9 @@ export const EditForm = forwardRef(({ editItem, modal, orderId }, ref) => {
     >
       <div className="my-5 shadow-sm px-2 py-3">
         {editItem?.days?.map((it) => (
-          <Tag key={it} color="success">{it}</Tag>
+          <Tag key={it} color="success">
+            {it}
+          </Tag>
         ))}
       </div>
       <Form.Item name="days">

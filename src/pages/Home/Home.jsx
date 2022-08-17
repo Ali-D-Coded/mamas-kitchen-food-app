@@ -7,7 +7,7 @@ const Home = () => {
     //  const refresh = useRefreshToken();
   return (
     <>
-      {/* <FoodList /> */}
+      <FoodList />
     </>
   );
 };
